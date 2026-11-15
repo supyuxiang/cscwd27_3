@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from pathlib import Path
 
 import torch
@@ -90,6 +91,7 @@ def main() -> None:
         log(f"[baseline-sft] saved {out_dir / 'policy_sft_teacher'}")
     barrier(world)
 
+    done_marker = out_dir / ".eval_done"
     if args.eval and rank == 0:
         results = evaluate_model(
             str(out_dir / "policy_sft_teacher"),
@@ -104,6 +106,10 @@ def main() -> None:
             if isinstance(value, dict):
                 swan.log({f"eval/{name}": value["mean_acc"]})
         swan.log({"eval/macro_avg": results["macro_avg"]})
+        done_marker.touch()
+    elif args.eval:
+        while not done_marker.exists():
+            time.sleep(5)
     if swan is not None:
         swan.finish()
     if dist.is_available() and dist.is_initialized():

@@ -1,0 +1,67 @@
+[LUMIA Server]Job 148145 lauched on node node5
+model=/data3/yxfeng/models/Qwen2.5/Qwen2.5-3B
+train_json=/home/yxfeng/datasets/sft_qwen2.5-3B/en/train_sft_Qwen_math7b_instruct_correct.json
+out=/data3/yxfeng/cscwd27_iraker/run1 limit=0 k=8 depth=0.6
+[skip] stage1 -> /data3/yxfeng/cscwd27_iraker/run1/candidates.jsonl
+[skip] stage2 -> /data3/yxfeng/cscwd27_iraker/run1/features.pt
+[skip] stage3 -> /data3/yxfeng/cscwd27_iraker/run1/ranker.pt
+===== analysis: pass@k and ranker top-1 selection =====
+{
+  "questions": 2474,
+  "k": 8,
+  "responses": 19792,
+  "mean_correct_per_question": 3.208164915117219,
+  "answer_accuracy": 0.40102061438965236,
+  "pass@k": {
+    "1": 0.40102061438965236,
+    "2": 0.5764089386765179,
+    "3": 0.6674269546136964,
+    "4": 0.7214343457674016,
+    "5": 0.7566260538168381,
+    "6": 0.7810803787966301,
+    "7": 0.798807599029911,
+    "8": 0.8120452708164915
+  },
+  "oracle_top1": 0.8120452708164915,
+  "random_top1_expected": 0.40102061438965236,
+  "all_wrong_questions": 465,
+  "all_right_questions": 58,
+  "ranker": {
+    "kind": "listwise",
+    "probe_layer": 21,
+    "depth": 0.6,
+    "params": 460417,
+    "top1_selection_accuracy": 0.6455133387227162,
+    "top1_recall_of_correct": 0.6455133387227162,
+    "pool_answer_accuracy": 0.40102061438965236,
+    "lift_over_random": 0.24449272433306385,
+    "mean_top1_score": 9.726684323702498
+  }
+}
+[analysis] wrote /data3/yxfeng/cscwd27_iraker/run1/analysis_pool.json
+===== route A: rejection-sampling SFT =====
+[skip] route A train -> reuse /data3/yxfeng/cscwd27_iraker/run1/sft/policy_sft, eval only
+[eval] math500  n=500 avg@4=45.55
+[eval] aime24   n=30 avg@4=5.83
+[eval] aime25   n=30 avg@4=0.00
+[eval] aime26   n=30 avg@4=0.00
+[eval] amc23    n=40 avg@4=23.75
+[eval] macro avg@4 = 15.03
+[sft] eval done macro=15.03
+===== route B: GRPO with ranker advantage =====
+[grpo] world=3 sampler_gpu=3
+[grpo] layers=36 probe_layer=21 ranker=/data3/yxfeng/cscwd27_iraker/run1/ranker.pt
+swanlab: Currently logged in as: yuxiang to https://api.swanlab.cn. Use `swanlab
+login --relogin` to force relogin
+swanlab: Tracking run with swanlab version 0.10.4
+swanlab: 💾 Run data saved at 
+/home/yxfeng/cscwd27_iraker/swanlog/run-20261115_151416-iqj856xa
+swanlab: 📁 View project at https://swanlab.cn/@yuuxiang/iraker
+swanlab: 🚀 View run routeB-grpo-ranker at 
+https://swanlab.cn/@yuuxiang/iraker/runs/iqj856xa
+[swanlab] run https://swanlab.cn/@yuuxiang/iraker/runs/iqj856xa
+swanlab: Error happened while training
+swanlab: 📁 View project at https://swanlab.cn/@yuuxiang/iraker
+swanlab: 🚀 View run routeB-grpo-ranker at 
+https://swanlab.cn/@yuuxiang/iraker/runs/iqj856xa
+swanlab: Upload complete: 286 records

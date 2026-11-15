@@ -8,7 +8,7 @@
 #SBATCH --cpus-per-task=32
 #SBATCH --gres=gpu:nvidia_geforce_rtx_4090:4
 #SBATCH --mem=128G
-#SBATCH --nodelist=node4
+#SBATCH --nodelist=node5
 #SBATCH --time=2-00:00:00
 #SBATCH --output=/home/yxfeng/cscwd27_iraker/logs/%x-%j.out
 #SBATCH --error=/home/yxfeng/cscwd27_iraker/logs/%x-%j.err
@@ -131,7 +131,7 @@ echo "===== analysis: pass@k and ranker top-1 selection ====="
 
 # -------------------------------------------------------- route A: rejection SFT
 echo "===== route A: rejection-sampling SFT ====="
-if [[ -s "$OUT/sft/policy_sft/config.json" ]]; then
+if [[ -s "$OUT/sft/policy_sft/config.json" && "${FORCE_ROUTE_A:-0}" != "1" ]]; then
   echo "[skip] route A train -> reuse $OUT/sft/policy_sft, eval only"
   "$PY" scripts/stage4_rejection_sft.py \
     --model "$MODEL" \
@@ -143,7 +143,7 @@ if [[ -s "$OUT/sft/policy_sft/config.json" ]]; then
     --sampler-gpu "${SAMPLER_GPU}" \
     --skip-train
 else
-  "$TORCHRUN" --standalone --nproc_per_node=4 \
+  "$TORCHRUN" --standalone --nproc_per_node=3 \
     scripts/stage4_rejection_sft.py \
     --model "$MODEL" \
     --features "$OUT/features.pt" \
@@ -184,7 +184,7 @@ echo "===== route B: GRPO with ranker advantage ====="
 
 # ------------------------------------------------------ baseline A: plain SFT
 echo "===== baseline A: SFT on teacher golden_res ====="
-"$TORCHRUN" --standalone --nproc_per_node=4 \
+"$TORCHRUN" --standalone --nproc_per_node=3 \
   scripts/baseline_sft.py \
   --model "$MODEL" \
   --train-json "$TRAIN_JSON" \

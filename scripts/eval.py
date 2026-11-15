@@ -20,6 +20,7 @@ def main() -> None:
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--n-sampling", type=int, default=4)
     parser.add_argument("--temperature", type=float, default=0.7)
+    parser.add_argument("--top-p", type=float, default=0.95)
     parser.add_argument("--max-new-tokens", type=int, default=3072)
     parser.add_argument("--gpu", type=int, default=0)
     args = parser.parse_args()
@@ -32,6 +33,7 @@ def main() -> None:
         max_new_tokens=args.max_new_tokens,
         limit=args.limit,
         gpu=args.gpu,
+        top_p=args.top_p,
     )
     if args.output:
         write_json(args.output, results)

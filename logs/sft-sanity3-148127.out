@@ -1,0 +1,13 @@
+[LUMIA Server]Job 148127 lauched on node node4
+(MainProcess pid=385135) INFO 11-15 13:38:18 [api_utils.py:286] non-default args: {'trust_remote_code': True, 'dtype': 'bfloat16', 'max_model_len': 6144, 'gpu_memory_utilization': 0.85, 'disable_log_stats': True, 'model': '/data3/yxfeng/cscwd27_iraker/run1/sft/policy_sft'}
+(MainProcess pid=385135) INFO 11-15 13:38:18 [model.py:733] Resolved architecture: Qwen2ForCausalLM
+(MainProcess pid=385135) INFO 11-15 13:38:18 [model.py:2152] Using max model len 6144
+(MainProcess pid=385135) INFO 11-15 13:38:18 [scheduler.py:307] Chunked prefill is enabled with max_num_batched_tokens=8192.
+(MainProcess pid=385135) INFO 11-15 13:38:18 [kernel.py:467] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=385682) INFO 11-15 13:38:33 [api_utils.py:286] non-default args: {'trust_remote_code': True, 'dtype': 'bfloat16', 'max_model_len': 6144, 'gpu_memory_utilization': 0.85, 'disable_log_stats': True, 'model': '/data3/yxfeng/cscwd27_iraker/run1/sft/policy_sft'}
+(EngineCore pid=385682) WARNING 11-15 13:38:33 [interface.py:1457] Unknown vLLM environment variable detected: VLLM_OMP_NUM_THREADS_SET_BY_VLLM
+(EngineCore pid=385682) INFO 11-15 13:38:33 [model.py:733] Resolved architecture: Qwen2ForCausalLM
+(EngineCore pid=385682) INFO 11-15 13:38:33 [model.py:2152] Using max model len 6144
+(EngineCore pid=385682) INFO 11-15 13:38:33 [scheduler.py:307] Chunked prefill is enabled with max_num_batched_tokens=8192.
+(EngineCore pid=385682) INFO 11-15 13:38:33 [kernel.py:467] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(MainProcess pid=385135) INFO 11-15 13:38:38 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore

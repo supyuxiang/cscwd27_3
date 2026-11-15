@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import contextlib
 import sys
+import time
 from pathlib import Path
 
 import torch
@@ -26,19 +27,28 @@ from iraker.swan import SwanLog  # noqa: E402
 
 
 def select_best(ranker_path: str, groups: list[dict], keep: int) -> list[dict]:
+    """Pick the top-k non-empty responses per question by ranker score.
+
+    Empty completions get loss on only the EOS token and teach the policy to
+    answer with EOS right after the prompt, so they are filtered out.
+    """
     model, _ = load_ranker(ranker_path, device="cpu")
     chosen: list[dict] = []
     with torch.no_grad():
         for group in groups:
             inst, resp, labels = pad_groups([group], torch.device("cpu"))
             scores = model(inst, resp)[0][: group["response"].size(0)]
-            top = torch.topk(scores, k=min(keep, scores.numel())).indices.tolist()
-            for index in top:
+            responses = group["responses"]
+            nonempty = [i for i in range(len(responses)) if str(responses[i]).strip()]
+            if not nonempty:
+                continue
+            order = sorted(nonempty, key=lambda i: float(scores[i]), reverse=True)
+            for index in order[:keep]:
                 chosen.append(
                     {
                         "qid": int(group["qid"]),
                         "prompt": group["prompt"],
-                        "response": group["responses"][index],
+                        "response": responses[index],
                         "label": int(group["labels"][index].item()),
                         "score": float(scores[index]),
                     }
@@ -143,6 +153,10 @@ def main() -> None:
         log(f"[sft] saved {out_dir / 'policy_sft'}")
     barrier(world)
 
+    # Eval runs only on rank 0 (vLLM on the sampler GPU). The other ranks must
+    # not block in a barrier for the full eval (~10 min > NCCL 600s timeout),
+    # so they poll for the result file instead and only join a barrier after.
+    done_marker = out_dir / ".eval_done"
     if args.eval and rank == 0:
         results = evaluate_model(
             str(out_dir / "policy_sft"),
@@ -157,6 +171,10 @@ def main() -> None:
             if isinstance(value, dict):
                 swan.log({f"eval/{name}": value["mean_acc"]})
         swan.log({"eval/macro_avg": results["macro_avg"]})
+        done_marker.touch()
+    elif args.eval:
+        while not done_marker.exists():
+            time.sleep(5)
     if swan is not None:
         swan.finish()
     barrier(world)

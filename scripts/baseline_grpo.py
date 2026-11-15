@@ -7,6 +7,7 @@ import copy
 import json
 import os
 import sys
+import time
 from pathlib import Path
 
 os.environ.setdefault("VLLM_WORKER_MULTIPROC_METHOD", "spawn")
@@ -176,6 +177,7 @@ def main() -> None:
         save_policy(out_dir / "policy_grpo_verifier", policy, tokenizer)
         log(f"[baseline-grpo] saved {out_dir / 'policy_grpo_verifier'}")
     barrier(world)
+    done_marker = out_dir / ".eval_done"
     if args.eval and rank == 0:
         results = evaluate_model(
             str(out_dir / "policy_grpo_verifier"),
@@ -190,6 +192,10 @@ def main() -> None:
             if isinstance(value, dict):
                 swan.log({f"eval/{name}": value["mean_acc"]})
         swan.log({"eval/macro_avg": results["macro_avg"]})
+        done_marker.touch()
+    elif args.eval:
+        while not done_marker.exists():
+            time.sleep(5)
     if swan is not None:
         swan.finish()
     if dist.is_available() and dist.is_initialized():

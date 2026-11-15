@@ -1,0 +1,412 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights: 100%|██████████| 434/434 [00:00<00:00, 8962.23it/s]
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights: 100%|█████████▉| 432/434 [00:00<00:00, 2083.74it/s]Loading weights: 100%|██████████| 434/434 [00:00<00:00, 2091.11it/s]
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights: 100%|██████████| 434/434 [00:00<00:00, 5288.79it/s]
+[rank0]:[W1115 15:15:46.595338387 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 12189696, total: 25262096384).
+[rank0]:[W1115 15:15:46.744601374 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 16384000, total: 25262096384).
+[rank0]:[W1115 15:15:46.756269031 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 16384000, total: 25262096384).
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/yxfeng/cscwd27_iraker/scripts/stage5_grpo.py", line 275, in <module>
+[rank0]:     main()
+[rank0]:   File "/home/yxfeng/cscwd27_iraker/scripts/stage5_grpo.py", line 201, in main
+[rank0]:     stats = grpo_step(
+[rank0]:             ^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/cscwd27_iraker/iraker/grpo.py", line 115, in grpo_step
+[rank0]:     return _loss_from_advantage(
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/cscwd27_iraker/iraker/grpo.py", line 67, in _loss_from_advantage
+[rank0]:     old_logp, mask = token_logprobs(policy, input_ids, attention, prompt_lens)
+[rank0]:                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/cscwd27_iraker/iraker/grpo.py", line 25, in token_logprobs
+[rank0]:     logits = model(input_ids=input_ids, attention_mask=attention, use_cache=False).logits[:, :-1].float()
+[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/parallel/distributed.py", line 1890, in forward
+[rank0]:     else self._run_ddp_forward(*inputs, **kwargs)
+[rank0]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/parallel/distributed.py", line 1715, in _run_ddp_forward
+[rank0]:     return self.module(*inputs, **kwargs)  # type: ignore[index]
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/peft/peft_model.py", line 2120, in forward
+[rank0]:     return self.base_model(
+[rank0]:            ^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/peft/tuners/tuners_utils.py", line 359, in forward
+[rank0]:     return self.model(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/utils/generic.py", line 939, in wrapper
+[rank0]:     output = func(self, *args, **kwargs)
+[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/models/qwen2/modeling_qwen2.py", line 452, in forward
+[rank0]:     outputs: BaseModelOutputWithPast = self.model(
+[rank0]:                                        ^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/utils/generic.py", line 1068, in wrapper
+[rank0]:     output = func(self, *args, **kwargs)
+[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/utils/output_capturing.py", line 262, in wrapper
+[rank0]:     outputs = func(self, *args, **kwargs)
+[rank0]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/models/qwen2/modeling_qwen2.py", line 388, in forward
+[rank0]:     hidden_states = decoder_layer(
+[rank0]:                     ^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/modeling_layers.py", line 113, in __call__
+[rank0]:     return self._gradient_checkpointing_func(partial(super().__call__, **kwargs), *args)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/_compile.py", line 54, in inner
+[rank0]:     return disable_fn(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py", line 1446, in _fn
+[rank0]:     return fn(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/utils/checkpoint.py", line 522, in checkpoint
+[rank0]:     gen.throw(e)
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/utils/checkpoint.py", line 1698, in _checkpoint_without_reentrant_generator
+[rank0]:     yield
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/utils/checkpoint.py", line 519, in checkpoint
+[rank0]:     ret = function(*args, **kwargs)
+[rank0]:           ^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/models/qwen2/modeling_qwen2.py", line 296, in forward
+[rank0]:     hidden_states = self.mlp(hidden_states)
+[rank0]:                     ^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/models/qwen2/modeling_qwen2.py", line 47, in forward
+[rank0]:     down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
+[rank0]:                                            ^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/peft/tuners/lora/layer.py", line 1102, in forward
+[rank0]:     result = result + lora_B(lora_A(dropout(x))) * scaling
+[rank0]:                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~
+[rank0]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 5.54 GiB. GPU 0 has a total capacity of 23.53 GiB of which 155.62 MiB is free. Including non-PyTorch memory, this process has 23.37 GiB memory in use. Of the allocated memory 22.73 GiB is allocated by PyTorch, and 46.83 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+[rank2]:[W1115 15:15:47.794734393 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 2 while trying to map 20971520 bytes (free: 16384000, total: 25262096384).
+[rank1]:[W1115 15:15:47.929048093 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 1 while trying to map 20971520 bytes (free: 16384000, total: 25262096384).
+[rank2]:[W1115 15:15:47.962296086 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 2 while trying to map 20971520 bytes (free: 16384000, total: 25262096384).
+[rank2]:[W1115 15:15:47.968828990 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 2 while trying to map 20971520 bytes (free: 16384000, total: 25262096384).
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/home/yxfeng/cscwd27_iraker/scripts/stage5_grpo.py", line 275, in <module>
+[rank2]:     main()
+[rank2]:   File "/home/yxfeng/cscwd27_iraker/scripts/stage5_grpo.py", line 201, in main
+[rank2]:     stats = grpo_step(
+[rank2]:             ^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/cscwd27_iraker/iraker/grpo.py", line 115, in grpo_step
+[rank2]:     return _loss_from_advantage(
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/cscwd27_iraker/iraker/grpo.py", line 67, in _loss_from_advantage
+[rank2]:     old_logp, mask = token_logprobs(policy, input_ids, attention, prompt_lens)
+[rank2]:                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/cscwd27_iraker/iraker/grpo.py", line 25, in token_logprobs
+[rank2]:     logits = model(input_ids=input_ids, attention_mask=attention, use_cache=False).logits[:, :-1].float()
+[rank2]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank2]:     return self._call_impl(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank2]:     return forward_call(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/parallel/distributed.py", line 1890, in forward
+[rank2]:     else self._run_ddp_forward(*inputs, **kwargs)
+[rank2]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/parallel/distributed.py", line 1715, in _run_ddp_forward
+[rank2]:     return self.module(*inputs, **kwargs)  # type: ignore[index]
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank2]:     return self._call_impl(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank2]:     return forward_call(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/peft/peft_model.py", line 2120, in forward
+[rank2]:     return self.base_model(
+[rank2]:            ^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank2]:     return self._call_impl(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank2]:     return forward_call(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/peft/tuners/tuners_utils.py", line 359, in forward
+[rank2]:     return self.model(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank2]:     return self._call_impl(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank2]:     return forward_call(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/utils/generic.py", line 939, in wrapper
+[rank2]:     output = func(self, *args, **kwargs)
+[rank2]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/models/qwen2/modeling_qwen2.py", line 452, in forward
+[rank2]:     outputs: BaseModelOutputWithPast = self.model(
+[rank2]:                                        ^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank2]:     return self._call_impl(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank2]:     return forward_call(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/utils/generic.py", line 1068, in wrapper
+[rank2]:     output = func(self, *args, **kwargs)
+[rank2]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/utils/output_capturing.py", line 262, in wrapper
+[rank2]:     outputs = func(self, *args, **kwargs)
+[rank2]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/models/qwen2/modeling_qwen2.py", line 388, in forward
+[rank2]:     hidden_states = decoder_layer(
+[rank2]:                     ^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/modeling_layers.py", line 113, in __call__
+[rank2]:     return self._gradient_checkpointing_func(partial(super().__call__, **kwargs), *args)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/_compile.py", line 54, in inner
+[rank2]:     return disable_fn(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py", line 1446, in _fn
+[rank2]:     return fn(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/utils/checkpoint.py", line 522, in checkpoint
+[rank2]:     gen.throw(e)
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/utils/checkpoint.py", line 1698, in _checkpoint_without_reentrant_generator
+[rank2]:     yield
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/utils/checkpoint.py", line 519, in checkpoint
+[rank2]:     ret = function(*args, **kwargs)
+[rank2]:           ^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank2]:     return self._call_impl(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank2]:     return forward_call(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/models/qwen2/modeling_qwen2.py", line 296, in forward
+[rank2]:     hidden_states = self.mlp(hidden_states)
+[rank2]:                     ^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank2]:     return self._call_impl(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank2]:     return forward_call(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/models/qwen2/modeling_qwen2.py", line 47, in forward
+[rank2]:     down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
+[rank2]:                                            ^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank2]:     return self._call_impl(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank2]:     return forward_call(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/peft/tuners/lora/layer.py", line 1102, in forward
+[rank2]:     result = result + lora_B(lora_A(dropout(x))) * scaling
+[rank2]:                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~
+[rank2]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 5.54 GiB. GPU 2 has a total capacity of 23.53 GiB of which 155.62 MiB is free. Including non-PyTorch memory, this process has 23.37 GiB memory in use. Of the allocated memory 22.73 GiB is allocated by PyTorch, and 46.83 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+[rank1]:[W1115 15:15:48.072299331 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 1 while trying to map 20971520 bytes (free: 16384000, total: 25262096384).
+[rank1]:[W1115 15:15:48.080433922 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 1 while trying to map 20971520 bytes (free: 16384000, total: 25262096384).
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/home/yxfeng/cscwd27_iraker/scripts/stage5_grpo.py", line 275, in <module>
+[rank1]:     main()
+[rank1]:   File "/home/yxfeng/cscwd27_iraker/scripts/stage5_grpo.py", line 201, in main
+[rank1]:     stats = grpo_step(
+[rank1]:             ^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/cscwd27_iraker/iraker/grpo.py", line 115, in grpo_step
+[rank1]:     return _loss_from_advantage(
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/cscwd27_iraker/iraker/grpo.py", line 67, in _loss_from_advantage
+[rank1]:     old_logp, mask = token_logprobs(policy, input_ids, attention, prompt_lens)
+[rank1]:                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/cscwd27_iraker/iraker/grpo.py", line 25, in token_logprobs
+[rank1]:     logits = model(input_ids=input_ids, attention_mask=attention, use_cache=False).logits[:, :-1].float()
+[rank1]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/parallel/distributed.py", line 1890, in forward
+[rank1]:     else self._run_ddp_forward(*inputs, **kwargs)
+[rank1]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/parallel/distributed.py", line 1715, in _run_ddp_forward
+[rank1]:     return self.module(*inputs, **kwargs)  # type: ignore[index]
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/peft/peft_model.py", line 2120, in forward
+[rank1]:     return self.base_model(
+[rank1]:            ^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/peft/tuners/tuners_utils.py", line 359, in forward
+[rank1]:     return self.model(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/utils/generic.py", line 939, in wrapper
+[rank1]:     output = func(self, *args, **kwargs)
+[rank1]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/models/qwen2/modeling_qwen2.py", line 452, in forward
+[rank1]:     outputs: BaseModelOutputWithPast = self.model(
+[rank1]:                                        ^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/utils/generic.py", line 1068, in wrapper
+[rank1]:     output = func(self, *args, **kwargs)
+[rank1]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/utils/output_capturing.py", line 262, in wrapper
+[rank1]:     outputs = func(self, *args, **kwargs)
+[rank1]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/models/qwen2/modeling_qwen2.py", line 388, in forward
+[rank1]:     hidden_states = decoder_layer(
+[rank1]:                     ^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/modeling_layers.py", line 113, in __call__
+[rank1]:     return self._gradient_checkpointing_func(partial(super().__call__, **kwargs), *args)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/_compile.py", line 54, in inner
+[rank1]:     return disable_fn(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py", line 1446, in _fn
+[rank1]:     return fn(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/utils/checkpoint.py", line 522, in checkpoint
+[rank1]:     gen.throw(e)
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/utils/checkpoint.py", line 1698, in _checkpoint_without_reentrant_generator
+[rank1]:     yield
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/utils/checkpoint.py", line 519, in checkpoint
+[rank1]:     ret = function(*args, **kwargs)
+[rank1]:           ^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/models/qwen2/modeling_qwen2.py", line 296, in forward
+[rank1]:     hidden_states = self.mlp(hidden_states)
+[rank1]:                     ^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/transformers/models/qwen2/modeling_qwen2.py", line 47, in forward
+[rank1]:     down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
+[rank1]:                                            ^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/peft/tuners/lora/layer.py", line 1102, in forward
+[rank1]:     result = result + lora_B(lora_A(dropout(x))) * scaling
+[rank1]:                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~
+[rank1]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 5.54 GiB. GPU 1 has a total capacity of 23.53 GiB of which 155.62 MiB is free. Including non-PyTorch memory, this process has 23.37 GiB memory in use. Of the allocated memory 22.73 GiB is allocated by PyTorch, and 46.83 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+[rank0]:[W1115 15:15:48.187288337 ProcessGroupNCCL.cpp:1624] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+W1115 15:15:49.978000 1215703 site-packages/torch/distributed/elastic/multiprocessing/api.py:1028] Sending process 1215733 closing signal SIGTERM
+W1115 15:15:49.979000 1215703 site-packages/torch/distributed/elastic/multiprocessing/api.py:1028] Sending process 1215734 closing signal SIGTERM
+E1115 15:15:50.545000 1215703 site-packages/torch/distributed/elastic/multiprocessing/api.py:1002] failed (exitcode: 1) local_rank: 0 (pid: 1215732) of binary: /home/yxfeng/miniconda3/envs/verl1/bin/python
+Traceback (most recent call last):
+  File "/home/yxfeng/miniconda3/envs/verl1/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/distributed/run.py", line 1028, in main
+    run(args)
+  File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/distributed/run.py", line 1019, in run
+    elastic_launch(
+  File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 194, in __call__
+    return launch_agent(
+           ^^^^^^^^^^^^^
+  File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 383, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+scripts/stage5_grpo.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2026-11-15_15:15:50
+  host      : gpu-4090-2
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 1215733) 
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[2]:
+  time      : 2026-11-15_15:15:50
+  host      : gpu-4090-2
+  rank      : 2 (local_rank: 2)
+  exitcode  : 1 (pid: 1215734) 
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-11-15_15:15:49
+  host      : gpu-4090-2
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 1215732) 
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

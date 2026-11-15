@@ -93,11 +93,13 @@ def _vllm_sample(
         "--seed", str(seed),
     ]
     completed = subprocess.run(command, env=env, capture_output=True, text=True)
-    if completed.returncode != 0:
+    if completed.returncode != 0 and not output_path.exists():
         raise RuntimeError(
             f"vLLM eval worker failed ({completed.returncode})\n"
             f"stdout:\n{completed.stdout[-3000:]}\nstderr:\n{completed.stderr[-3000:]}"
         )
+    # The worker sometimes finishes writing groups.json but hangs on vLLM
+    # teardown (a zombie child). Use the completed output and move on.
     return json.loads(output_path.read_text(encoding="utf-8"))
 
 

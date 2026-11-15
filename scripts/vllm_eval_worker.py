@@ -32,6 +32,7 @@ def main() -> None:
     parser.add_argument("--max-model-len", type=int, default=6144)
     parser.add_argument("--gpu-memory-utilization", type=float, default=0.85)
     parser.add_argument("--seed", type=int, default=1234)
+    parser.add_argument("--stop-token-ids", type=int, nargs="*", default=None)
     args = parser.parse_args()
 
     from vllm import LLM, SamplingParams
@@ -51,6 +52,7 @@ def main() -> None:
         top_p=args.top_p,
         max_tokens=args.max_new_tokens,
         seed=args.seed,
+        stop_token_ids=args.stop_token_ids,
     )
     outputs = llm.generate(prompts, params, use_tqdm=False)
     groups = [[item.text.strip() for item in result.outputs] for result in outputs]

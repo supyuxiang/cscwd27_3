@@ -20,8 +20,36 @@ def group_advantages(scores: torch.Tensor, eps: float = 1e-4) -> torch.Tensor:
     return (scores - mean) / std
 
 
-def token_logprobs(model, input_ids: torch.Tensor, attention: torch.Tensor, prompt_lens: torch.Tensor):
-    """Per-token logprob of the completion part, plus a mask of real tokens."""
+def token_logprobs(model, input_ids: torch.Tensor, attention: torch.Tensor, prompt_lens: torch.Tensor, micro: int = 0):
+    """Per-token logprob of the completion part, plus a mask of real tokens.
+
+    ``micro`` chunks the batch over rows so a (batch, 4096, vocab) fp32 logits
+    tensor never has to live in 24GB at once. Chunking is over rows so the
+    prompt_lens mask is unchanged.
+    """
+    if micro and micro < input_ids.size(0):
+        logps, masks = [], []
+        for start in range(0, input_ids.size(0), micro):
+            logp, mask = token_logprobs(
+                model,
+                input_ids[start:start + micro],
+                attention[start:start + micro],
+                prompt_lens[start:start + micro],
+                micro=0,
+            )
+            logps.append(logp)
+            masks.append(mask)
+        width = input_ids.size(1) - 1
+        logp = torch.zeros(input_ids.size(0), width, dtype=torch.float32, device=input_ids.device)
+        mask = torch.zeros(input_ids.size(0), width, dtype=torch.float32, device=input_ids.device)
+        row = 0
+        for logp_chunk, mask_chunk in zip(logps, masks):
+            n = logp_chunk.size(0)
+            logp[row:row + n, : logp_chunk.size(1)] = logp_chunk
+            mask[row:row + n, : mask_chunk.size(1)] = mask_chunk
+            row += n
+        return logp, mask
+
     logits = model(input_ids=input_ids, attention_mask=attention, use_cache=False).logits[:, :-1].float()
     targets = input_ids[:, 1:]
     logp = torch.log_softmax(logits, dim=-1).gather(-1, targets.unsqueeze(-1)).squeeze(-1)
@@ -60,14 +88,15 @@ def _loss_from_advantage(
     kl_coef: float,
     max_length: int,
     device,
+    logprob_micro: int = 8,
 ) -> dict:
     input_ids, attention, prompt_lens = _encode_batch(rows, tokenizer, max_length, device)
 
     with torch.no_grad():
-        old_logp, mask = token_logprobs(policy, input_ids, attention, prompt_lens)
-        ref_logp, _ = token_logprobs(reference, input_ids, attention, prompt_lens)
+        old_logp, mask = token_logprobs(policy, input_ids, attention, prompt_lens, micro=logprob_micro)
+        ref_logp, _ = token_logprobs(reference, input_ids, attention, prompt_lens, micro=logprob_micro)
 
-    new_logp, _ = token_logprobs(policy, input_ids, attention, prompt_lens)
+    new_logp, _ = token_logprobs(policy, input_ids, attention, prompt_lens, micro=logprob_micro)
     ratio = torch.exp(new_logp - old_logp)
     unclipped = ratio * advantage.unsqueeze(1)
     clipped = torch.clamp(ratio, 1 - clip_eps, 1 + clip_eps) * advantage.unsqueeze(1)
