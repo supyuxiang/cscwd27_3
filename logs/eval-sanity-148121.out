@@ -1,0 +1,9 @@
+[LUMIA Server]Job 148121 lauched on node node4
+q0 gold=\left( 3, \frac{\pi}{2} \right) accs=[False, False, False, False]
+  sample0: 
+q1 gold=p - q accs=[False, False, False, False]
+  sample0: 
+q2 gold=\frac{14}{3} accs=[False, False, False, False]
+  sample0: 
+q3 gold=9 accs=[False, False, False, False]
+  sample0: 

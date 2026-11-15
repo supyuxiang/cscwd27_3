@@ -1,42 +1,43 @@
-"""Greedy exact-match evaluation for a saved policy or a base model."""
+"""Stage 6: evaluate any checkpoint on math500 / aime24 / aime25 / aime26 / amc23."""
 
-import json
+from __future__ import annotations
+
+import argparse
 import sys
 from pathlib import Path
 
-import torch
-import yaml
-from transformers import AutoModelForCausalLM, AutoTokenizer
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-
-from dpo_ranker.sample import format_prompt
-from dpo_ranker.verifier import is_correct
+from iraker.core import write_json  # noqa: E402
+from iraker.evaluate import DEFAULT_SETS, evaluate_model  # noqa: E402
 
 
 def main() -> None:
-    if len(sys.argv) != 3:
-        raise SystemExit("usage: python scripts/eval.py CONFIG TEST_JSON")
-    with Path(sys.argv[1]).open(encoding="utf-8") as handle:
-        config = yaml.safe_load(handle)
-    rows = json.loads(Path(sys.argv[2]).read_text(encoding="utf-8"))
-    model_path = Path(config["output_dir"]) / "policy"
-    name = str(model_path if model_path.is_dir() else config["model_name"])
-    tokenizer = AutoTokenizer.from_pretrained(name, trust_remote_code=True)
-    model = AutoModelForCausalLM.from_pretrained(
-        name, trust_remote_code=True, torch_dtype=torch.bfloat16, attn_implementation="sdpa"
-    ).to(config.get("device", "cuda"))
-    model.eval()
-    hits = 0
-    with torch.no_grad():
-        for row in rows:
-            prompt = format_prompt(tokenizer, row["question"])
-            encoded = tokenizer(prompt, return_tensors="pt").to(model.device)
-            output = model.generate(**encoded, max_new_tokens=int(config["max_new_tokens"]), do_sample=False)
-            text = tokenizer.decode(output[0, encoded.input_ids.shape[1] :], skip_special_tokens=True)
-            hits += int(is_correct(text, str(row["answer"])))
-    print(json.dumps({"n": len(rows), "exact_match": hits / max(len(rows), 1)}))
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model", required=True, help="base model or a saved checkpoint dir")
+    parser.add_argument("--output", default="")
+    parser.add_argument("--sets", default=",".join(DEFAULT_SETS))
+    parser.add_argument("--limit", type=int, default=0)
+    parser.add_argument("--n-sampling", type=int, default=4)
+    parser.add_argument("--temperature", type=float, default=0.7)
+    parser.add_argument("--max-new-tokens", type=int, default=3072)
+    parser.add_argument("--gpu", type=int, default=0)
+    args = parser.parse_args()
+
+    results = evaluate_model(
+        args.model,
+        datasets=tuple(x.strip() for x in args.sets.split(",") if x.strip()),
+        n_sampling=args.n_sampling,
+        temperature=args.temperature,
+        max_new_tokens=args.max_new_tokens,
+        limit=args.limit,
+        gpu=args.gpu,
+    )
+    if args.output:
+        write_json(args.output, results)
+        print(f"[eval] wrote {args.output}")
+    else:
+        print(results)
 
 
 if __name__ == "__main__":

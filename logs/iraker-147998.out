@@ -1,0 +1,12 @@
+[LUMIA Server]Job 147998 lauched on node node7
+model=/data3/yxfeng/models/Qwen2.5/Qwen2.5-3B
+train_json=/home/yxfeng/datasets/sft_qwen2.5-3B/en/train_sft_Qwen_math7b_instruct_correct.json
+out=/data3/yxfeng/cscwd27_iraker/run1 limit=0 k=8 depth=0.6
+[skip] stage1 -> /data3/yxfeng/cscwd27_iraker/run1/candidates.jsonl
+===== stage2: extract probe-layer features =====
+[stage2] layers=36 probe_layer=21 (60% depth)
+[stage2] 200 responses
+[stage2] 400 responses
+[stage2] saved /data3/yxfeng/cscwd27_iraker/run1/features.pt groups=64 d_in=2048
+===== stage3: train the lightweight ranker =====
+[stage3] groups=64 d_in=2048 probe_layer=21

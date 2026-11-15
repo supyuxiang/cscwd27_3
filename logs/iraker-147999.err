@@ -1,0 +1,114 @@
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.nvrtc module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.nvrtc module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.nvrtc module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.nvrtc module instead.
+Loading safetensors checkpoint shards:   0% Completed | 0/2 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards:  50% Completed | 1/2 [00:01<00:01,  1.06s/it]
+Loading safetensors checkpoint shards: 100% Completed | 2/2 [00:01<00:00,  1.16it/s]
+Loading safetensors checkpoint shards: 100% Completed | 2/2 [00:01<00:00,  1.12it/s]
+
+Capturing CUDA graphs (PIECEWISE):   0%|          | 0/51 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):   2%|▏         | 1/51 [00:00<00:05,  8.52it/s]Capturing CUDA graphs (PIECEWISE):   4%|▍         | 2/51 [00:00<00:05,  8.66it/s]Capturing CUDA graphs (PIECEWISE):   6%|▌         | 3/51 [00:00<00:05,  8.56it/s]Capturing CUDA graphs (PIECEWISE):   8%|▊         | 4/51 [00:00<00:05,  8.76it/s]Capturing CUDA graphs (PIECEWISE):  10%|▉         | 5/51 [00:00<00:05,  8.92it/s]Capturing CUDA graphs (PIECEWISE):  12%|█▏        | 6/51 [00:00<00:04,  9.16it/s]Capturing CUDA graphs (PIECEWISE):  14%|█▎        | 7/51 [00:00<00:04,  9.39it/s]Capturing CUDA graphs (PIECEWISE):  16%|█▌        | 8/51 [00:00<00:04,  9.46it/s]Capturing CUDA graphs (PIECEWISE):  20%|█▉        | 10/51 [00:01<00:04,  9.71it/s]Capturing CUDA graphs (PIECEWISE):  24%|██▎       | 12/51 [00:01<00:03,  9.90it/s]Capturing CUDA graphs (PIECEWISE):  27%|██▋       | 14/51 [00:01<00:03, 10.10it/s]Capturing CUDA graphs (PIECEWISE):  31%|███▏      | 16/51 [00:01<00:03, 10.15it/s]Capturing CUDA graphs (PIECEWISE):  35%|███▌      | 18/51 [00:01<00:03, 10.46it/s]Capturing CUDA graphs (PIECEWISE):  39%|███▉      | 20/51 [00:02<00:02, 10.82it/s]Capturing CUDA graphs (PIECEWISE):  43%|████▎     | 22/51 [00:02<00:02, 10.94it/s]Capturing CUDA graphs (PIECEWISE):  47%|████▋     | 24/51 [00:02<00:02, 11.18it/s]Capturing CUDA graphs (PIECEWISE):  51%|█████     | 26/51 [00:02<00:02, 11.27it/s]Capturing CUDA graphs (PIECEWISE):  55%|█████▍    | 28/51 [00:02<00:02, 11.42it/s]Capturing CUDA graphs (PIECEWISE):  59%|█████▉    | 30/51 [00:02<00:01, 11.51it/s]Capturing CUDA graphs (PIECEWISE):  63%|██████▎   | 32/51 [00:03<00:01, 11.56it/s]Capturing CUDA graphs (PIECEWISE):  67%|██████▋   | 34/51 [00:03<00:01, 11.60it/s]Capturing CUDA graphs (PIECEWISE):  71%|███████   | 36/51 [00:03<00:01, 11.58it/s]Capturing CUDA graphs (PIECEWISE):  75%|███████▍  | 38/51 [00:03<00:01, 11.57it/s]Capturing CUDA graphs (PIECEWISE):  78%|███████▊  | 40/51 [00:03<00:00, 11.49it/s]Capturing CUDA graphs (PIECEWISE):  82%|████████▏ | 42/51 [00:03<00:00, 11.44it/s]Capturing CUDA graphs (PIECEWISE):  86%|████████▋ | 44/51 [00:04<00:00, 11.37it/s]Capturing CUDA graphs (PIECEWISE):  90%|█████████ | 46/51 [00:04<00:00, 11.31it/s]Capturing CUDA graphs (PIECEWISE):  94%|█████████▍| 48/51 [00:04<00:00, 11.31it/s]Capturing CUDA graphs (PIECEWISE):  98%|█████████▊| 50/51 [00:04<00:00, 11.36it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:04<00:00, 10.80it/s]
+Capturing CUDA graphs (FULL):   0%|          | 0/2 [00:00<?, ?it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00, 14.53it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00, 14.51it/s]
+Capturing CUDA graphs (PIECEWISE):   0%|          | 0/51 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):   2%|▏         | 1/51 [00:00<00:09,  5.17it/s]Capturing CUDA graphs (PIECEWISE):   4%|▍         | 2/51 [00:00<00:06,  7.15it/s]Capturing CUDA graphs (PIECEWISE):   6%|▌         | 3/51 [00:00<00:05,  8.11it/s]Capturing CUDA graphs (PIECEWISE):   8%|▊         | 4/51 [00:00<00:05,  8.61it/s]Capturing CUDA graphs (PIECEWISE):  10%|▉         | 5/51 [00:00<00:05,  9.01it/s]Capturing CUDA graphs (PIECEWISE):  12%|█▏        | 6/51 [00:00<00:04,  9.31it/s]Capturing CUDA graphs (PIECEWISE):  16%|█▌        | 8/51 [00:00<00:04,  9.66it/s]Capturing CUDA graphs (PIECEWISE):  20%|█▉        | 10/51 [00:01<00:04,  9.96it/s]Capturing CUDA graphs (PIECEWISE):  24%|██▎       | 12/51 [00:01<00:03, 10.29it/s]Capturing CUDA graphs (PIECEWISE):  27%|██▋       | 14/51 [00:01<00:03, 10.67it/s]Capturing CUDA graphs (PIECEWISE):  31%|███▏      | 16/51 [00:01<00:03, 10.94it/s]Capturing CUDA graphs (PIECEWISE):  35%|███▌      | 18/51 [00:01<00:02, 11.06it/s]Capturing CUDA graphs (PIECEWISE):  39%|███▉      | 20/51 [00:01<00:02, 11.29it/s]Capturing CUDA graphs (PIECEWISE):  43%|████▎     | 22/51 [00:02<00:02, 11.55it/s]Capturing CUDA graphs (PIECEWISE):  47%|████▋     | 24/51 [00:02<00:02, 11.70it/s]Capturing CUDA graphs (PIECEWISE):  51%|█████     | 26/51 [00:02<00:02, 11.75it/s]Capturing CUDA graphs (PIECEWISE):  55%|█████▍    | 28/51 [00:02<00:01, 11.88it/s]Capturing CUDA graphs (PIECEWISE):  59%|█████▉    | 30/51 [00:02<00:01, 11.89it/s]Capturing CUDA graphs (PIECEWISE):  63%|██████▎   | 32/51 [00:02<00:01, 11.84it/s]Capturing CUDA graphs (PIECEWISE):  67%|██████▋   | 34/51 [00:03<00:01, 11.76it/s]Capturing CUDA graphs (PIECEWISE):  71%|███████   | 36/51 [00:03<00:01, 11.57it/s]Capturing CUDA graphs (PIECEWISE):  75%|███████▍  | 38/51 [00:03<00:01, 11.46it/s]Capturing CUDA graphs (PIECEWISE):  78%|███████▊  | 40/51 [00:03<00:00, 11.03it/s]Capturing CUDA graphs (PIECEWISE):  82%|████████▏ | 42/51 [00:03<00:00, 10.98it/s]Capturing CUDA graphs (PIECEWISE):  86%|████████▋ | 44/51 [00:04<00:00, 10.77it/s]Capturing CUDA graphs (PIECEWISE):  90%|█████████ | 46/51 [00:04<00:00, 10.62it/s]Capturing CUDA graphs (PIECEWISE):  94%|█████████▍| 48/51 [00:04<00:00, 10.53it/s]Capturing CUDA graphs (PIECEWISE):  98%|█████████▊| 50/51 [00:04<00:00, 10.27it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 51/51 [00:04<00:00, 10.69it/s]
+Capturing CUDA graphs (FULL):   0%|          | 0/35 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):   6%|▌         | 2/35 [00:00<00:02, 12.79it/s]Capturing CUDA graphs (FULL):  11%|█▏        | 4/35 [00:00<00:02, 14.56it/s]Capturing CUDA graphs (FULL):  17%|█▋        | 6/35 [00:00<00:01, 15.23it/s]Capturing CUDA graphs (FULL):  23%|██▎       | 8/35 [00:00<00:01, 15.28it/s]Capturing CUDA graphs (FULL):  29%|██▊       | 10/35 [00:00<00:01, 15.78it/s]Capturing CUDA graphs (FULL):  34%|███▍      | 12/35 [00:00<00:01, 16.08it/s]Capturing CUDA graphs (FULL):  40%|████      | 14/35 [00:00<00:01, 15.74it/s]Capturing CUDA graphs (FULL):  46%|████▌     | 16/35 [00:01<00:01, 16.09it/s]Capturing CUDA graphs (FULL):  51%|█████▏    | 18/35 [00:01<00:01, 16.24it/s]Capturing CUDA graphs (FULL):  57%|█████▋    | 20/35 [00:01<00:00, 16.45it/s]Capturing CUDA graphs (FULL):  63%|██████▎   | 22/35 [00:01<00:00, 16.45it/s]Capturing CUDA graphs (FULL):  69%|██████▊   | 24/35 [00:01<00:00, 16.56it/s]Capturing CUDA graphs (FULL):  74%|███████▍  | 26/35 [00:01<00:00, 16.57it/s]Capturing CUDA graphs (FULL):  80%|████████  | 28/35 [00:01<00:00, 16.60it/s]Capturing CUDA graphs (FULL):  86%|████████▌ | 30/35 [00:01<00:00, 16.64it/s]Capturing CUDA graphs (FULL):  91%|█████████▏| 32/35 [00:01<00:00, 16.86it/s]Capturing CUDA graphs (FULL):  97%|█████████▋| 34/35 [00:02<00:00, 16.94it/s]Capturing CUDA graphs (FULL): 100%|██████████| 35/35 [00:02<00:00, 16.26it/s]
+/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/multiprocessing/resource_tracker.py:279: UserWarning: resource_tracker: There appear to be 2 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
+/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/multiprocessing/resource_tracker.py:279: UserWarning: resource_tracker: There appear to be 2 leaked shared_memory objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights: 100%|██████████| 434/434 [00:00<00:00, 5874.34it/s]
+/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+[rank0]:[W1115 06:21:37.362788758 ProcessGroupNCCL.cpp:5276] Guessing device ID based on global rank. This can cause a hang if rank to GPU mapping is heterogeneous. You can specify device_id in init_process_group()
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights: 100%|██████████| 434/434 [00:00<00:00, 27829.93it/s]
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights: 100%|██████████| 434/434 [00:00<00:00, 12638.36it/s]
+[rank1]:[W1115 06:23:46.635376724 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 1 while trying to allocate 763363328 bytes (free: 515506176, total: 25262096384).
+[rank0]:[W1115 06:23:49.634471344 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 46137344 bytes (free: 7995392, total: 25262096384).
+[rank0]:[W1115 06:23:49.634723256 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 46137344 bytes (free: 7995392, total: 25262096384).
+[rank1]:[W1115 06:23:49.645861399 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 1 while trying to allocate 46137344 bytes (free: 45744128, total: 25262096384).
+[rank1]:[W1115 06:23:49.646004582 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 1 while trying to allocate 46137344 bytes (free: 45744128, total: 25262096384).
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/yxfeng/cscwd27_iraker/scripts/stage4_rejection_sft.py", line 133, in <module>
+[rank0]:     main()
+[rank0]:   File "/home/yxfeng/cscwd27_iraker/scripts/stage4_rejection_sft.py", line 94, in main
+[rank0]:     stats = run_sft(
+[rank0]:             ^^^^^^^^
+[rank0]:   File "/home/yxfeng/cscwd27_iraker/iraker/policy.py", line 193, in run_sft
+[rank0]:     optimizer.step()
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/optim/optimizer.py", line 530, in wrapper
+[rank0]:     out = func(*args, **kwargs)
+[rank0]:           ^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/optim/optimizer.py", line 80, in _use_grad
+[rank0]:     ret = func(*args, **kwargs)
+[rank0]:           ^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/optim/adam.py", line 238, in step
+[rank0]:     has_complex = self._init_group(
+[rank0]:                   ^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/optim/adam.py", line 178, in _init_group
+[rank0]:     state["exp_avg"] = torch.zeros_like(
+[rank0]:                        ^^^^^^^^^^^^^^^^^
+[rank0]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 44.00 MiB. GPU 0 has a total capacity of 23.53 GiB of which 7.62 MiB is free. Including non-PyTorch memory, this process has 23.51 GiB memory in use. Of the allocated memory 22.61 GiB is allocated by PyTorch, and 305.49 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/home/yxfeng/cscwd27_iraker/scripts/stage4_rejection_sft.py", line 133, in <module>
+[rank1]:     main()
+[rank1]:   File "/home/yxfeng/cscwd27_iraker/scripts/stage4_rejection_sft.py", line 94, in main
+[rank1]:     stats = run_sft(
+[rank1]:             ^^^^^^^^
+[rank1]:   File "/home/yxfeng/cscwd27_iraker/iraker/policy.py", line 193, in run_sft
+[rank1]:     optimizer.step()
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/optim/optimizer.py", line 530, in wrapper
+[rank1]:     out = func(*args, **kwargs)
+[rank1]:           ^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/optim/optimizer.py", line 80, in _use_grad
+[rank1]:     ret = func(*args, **kwargs)
+[rank1]:           ^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/optim/adam.py", line 238, in step
+[rank1]:     has_complex = self._init_group(
+[rank1]:                   ^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/optim/adam.py", line 178, in _init_group
+[rank1]:     state["exp_avg"] = torch.zeros_like(
+[rank1]:                        ^^^^^^^^^^^^^^^^^
+[rank1]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 44.00 MiB. GPU 1 has a total capacity of 23.53 GiB of which 43.62 MiB is free. Including non-PyTorch memory, this process has 23.48 GiB memory in use. Of the allocated memory 22.53 GiB is allocated by PyTorch, and 351.75 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+[rank0]:[W1115 06:23:50.067507595 ProcessGroupNCCL.cpp:1624] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+W1115 06:23:51.494000 3952824 site-packages/torch/distributed/elastic/multiprocessing/api.py:1028] Sending process 3952844 closing signal SIGTERM
+E1115 06:23:51.561000 3952824 site-packages/torch/distributed/elastic/multiprocessing/api.py:1002] failed (exitcode: 1) local_rank: 0 (pid: 3952843) of binary: /home/yxfeng/miniconda3/envs/verl1/bin/python
+Traceback (most recent call last):
+  File "/home/yxfeng/miniconda3/envs/verl1/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/distributed/run.py", line 1028, in main
+    run(args)
+  File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/distributed/run.py", line 1019, in run
+    elastic_launch(
+  File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 194, in __call__
+    return launch_agent(
+           ^^^^^^^^^^^^^
+  File "/home/yxfeng/miniconda3/envs/verl1/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 383, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+scripts/stage4_rejection_sft.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2026-11-15_06:23:51
+  host      : gpu-4090-4
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 3952844) 
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-11-15_06:23:51
+  host      : gpu-4090-4
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 3952843) 
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

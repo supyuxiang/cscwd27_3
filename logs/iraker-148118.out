@@ -1,0 +1,57 @@
+[LUMIA Server]Job 148118 lauched on node node4
+model=/data3/yxfeng/models/Qwen2.5/Qwen2.5-3B
+train_json=/home/yxfeng/datasets/sft_qwen2.5-3B/en/train_sft_Qwen_math7b_instruct_correct.json
+out=/data3/yxfeng/cscwd27_iraker/run1 limit=0 k=8 depth=0.6
+[skip] stage1 -> /data3/yxfeng/cscwd27_iraker/run1/candidates.jsonl
+[skip] stage2 -> /data3/yxfeng/cscwd27_iraker/run1/features.pt
+[skip] stage3 -> /data3/yxfeng/cscwd27_iraker/run1/ranker.pt
+===== analysis: pass@k and ranker top-1 selection =====
+{
+  "questions": 2474,
+  "k": 8,
+  "responses": 19792,
+  "mean_correct_per_question": 3.208164915117219,
+  "answer_accuracy": 0.40102061438965236,
+  "pass@k": {
+    "1": 0.40102061438965236,
+    "2": 0.5764089386765179,
+    "3": 0.6674269546136964,
+    "4": 0.7214343457674016,
+    "5": 0.7566260538168381,
+    "6": 0.7810803787966301,
+    "7": 0.798807599029911,
+    "8": 0.8120452708164915
+  },
+  "oracle_top1": 0.8120452708164915,
+  "random_top1_expected": 0.40102061438965236,
+  "all_wrong_questions": 465,
+  "all_right_questions": 58,
+  "ranker": {
+    "kind": "listwise",
+    "probe_layer": 21,
+    "depth": 0.6,
+    "params": 460417,
+    "top1_selection_accuracy": 0.6455133387227162,
+    "top1_recall_of_correct": 0.6455133387227162,
+    "pool_answer_accuracy": 0.40102061438965236,
+    "lift_over_random": 0.24449272433306385,
+    "mean_top1_score": 9.726684323702498
+  }
+}
+[analysis] wrote /data3/yxfeng/cscwd27_iraker/run1/analysis_pool.json
+===== route A: rejection-sampling SFT =====
+[sft] groups=2474 ranker=/data3/yxfeng/cscwd27_iraker/run1/ranker.pt
+[sft] selected=2474 correct_labels=1597 (64.6%)
+swanlab: Currently logged in as: yuxiang to https://api.swanlab.cn. Use `swanlab
+login --relogin` to force relogin
+swanlab: Tracking run with swanlab version 0.10.4
+swanlab: 💾 Run data saved at 
+/home/yxfeng/cscwd27_iraker/swanlog/run-20261115_130842-zra401ko
+swanlab: 📁 View project at https://swanlab.cn/@yuuxiang/iraker
+swanlab: 🚀 View run routeA-rejection-sft at 
+https://swanlab.cn/@yuuxiang/iraker/runs/zra401ko
+[swanlab] run https://swanlab.cn/@yuuxiang/iraker/runs/zra401ko
+[sft] step 10/231 loss=0.3215 lr=9.99e-05
+[sft] step 20/231 loss=0.1750 lr=9.90e-05
+[sft] step 30/231 loss=0.1683 lr=9.72e-05
+[sft] step 40/231 loss=0.1754 lr=9.45e-05

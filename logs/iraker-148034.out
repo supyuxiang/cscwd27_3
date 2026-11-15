@@ -1,0 +1,72 @@
+[LUMIA Server]Job 148034 lauched on node node7
+model=/data3/yxfeng/models/Qwen2.5/Qwen2.5-3B
+train_json=/home/yxfeng/datasets/sft_qwen2.5-3B/en/train_sft_Qwen_math7b_instruct_correct.json
+out=/data3/yxfeng/cscwd27_iraker/run1 limit=0 k=8 depth=0.6
+[skip] stage1 -> /data3/yxfeng/cscwd27_iraker/run1/candidates.jsonl
+[skip] stage2 -> /data3/yxfeng/cscwd27_iraker/run1/features.pt
+[skip] stage3 -> /data3/yxfeng/cscwd27_iraker/run1/ranker.pt
+===== analysis: pass@k and ranker top-1 selection =====
+{
+  "questions": 2474,
+  "k": 8,
+  "responses": 19792,
+  "mean_correct_per_question": 3.208164915117219,
+  "answer_accuracy": 0.40102061438965236,
+  "pass@k": {
+    "1": 0.40102061438965236,
+    "2": 0.5764089386765179,
+    "3": 0.6674269546136964,
+    "4": 0.7214343457674016,
+    "5": 0.7566260538168381,
+    "6": 0.7810803787966301,
+    "7": 0.798807599029911,
+    "8": 0.8120452708164915
+  },
+  "oracle_top1": 0.8120452708164915,
+  "random_top1_expected": 0.40102061438965236,
+  "all_wrong_questions": 465,
+  "all_right_questions": 58,
+  "ranker": {
+    "kind": "listwise",
+    "probe_layer": 21,
+    "depth": 0.6,
+    "params": 460417,
+    "top1_selection_accuracy": 0.6455133387227162,
+    "top1_recall_of_correct": 0.6455133387227162,
+    "pool_answer_accuracy": 0.40102061438965236,
+    "lift_over_random": 0.24449272433306385,
+    "mean_top1_score": 9.726684323702498
+  }
+}
+[analysis] wrote /data3/yxfeng/cscwd27_iraker/run1/analysis_pool.json
+===== route A: rejection-sampling SFT =====
+[sft] groups=2474 ranker=/data3/yxfeng/cscwd27_iraker/run1/ranker.pt
+[sft] selected=2474 correct_labels=1597 (64.6%)
+[sft] step 10/462 loss=0.4143 lr=8.46e-05
+[sft] step 20/462 loss=0.1872 lr=9.99e-05
+[sft] step 30/462 loss=0.1747 lr=9.96e-05
+[sft] step 40/462 loss=0.1853 lr=9.91e-05
+[sft] step 50/462 loss=0.1647 lr=9.83e-05
+[sft] step 60/462 loss=0.1768 lr=9.73e-05
+[sft] step 70/462 loss=0.1675 lr=9.61e-05
+[sft] step 80/462 loss=0.1652 lr=9.46e-05
+[sft] step 90/462 loss=0.1508 lr=9.29e-05
+[sft] step 100/462 loss=0.1526 lr=9.10e-05
+[sft] step 110/462 loss=0.1655 lr=8.89e-05
+[sft] step 120/462 loss=0.1827 lr=8.66e-05
+[sft] step 130/462 loss=0.1542 lr=8.42e-05
+[sft] step 140/462 loss=0.1649 lr=8.15e-05
+[sft] step 150/462 loss=0.1717 lr=7.87e-05
+[sft] step 160/462 loss=0.1577 lr=7.58e-05
+[sft] step 170/462 loss=0.1622 lr=7.27e-05
+[sft] step 180/462 loss=0.1611 lr=6.96e-05
+[sft] step 190/462 loss=0.1360 lr=6.63e-05
+[sft] step 200/462 loss=0.1551 lr=6.30e-05
+[sft] step 210/462 loss=0.1467 lr=5.96e-05
+[sft] step 220/462 loss=0.1461 lr=5.61e-05
+[sft] step 230/462 loss=0.1537 lr=5.26e-05
+[sft] step 240/462 loss=0.1594 lr=4.91e-05
+[sft] step 250/462 loss=0.1463 lr=4.56e-05
+[sft] step 260/462 loss=0.1527 lr=4.22e-05
+[sft] step 270/462 loss=0.1450 lr=3.87e-05
+[sft] step 280/462 loss=0.1485 lr=3.53e-05

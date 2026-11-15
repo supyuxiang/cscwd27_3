@@ -1,59 +1,66 @@
-"""CPU checks for the verifier, the pair rules, and the ranker loss."""
+"""Quick offline checks: grading, ranker shapes, loss math. Run: python -m tests.test_core"""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import torch
 
-from dpo_ranker.pairs import ScoredCandidate, pairs_for_prompt, select_budget
-from dpo_ranker.ranker import fit_ranker, score_features
-from dpo_ranker.verifier import answers_match, extract_answer, is_correct
+from iraker.core import build_prompt, grade_text, probe_layer_index
+from iraker.grpo import group_advantages
+from iraker.ranker_model import ListwiseRanker, PointwiseRanker, count_parameters, pairwise_accuracy
 
 
-def test_verifier_reads_boxed_and_hash():
-    assert extract_answer(r"reason \boxed{2}") == "2"
-    assert is_correct("#### 1,000", "1000")
-    assert answers_match(r"\left(3\right)", "(3)")
-    assert not is_correct("no answer here", "2")
+def test_prompt_matches_eval():
+    prompt = build_prompt("What is 1+1?")
+    assert prompt.startswith("You are a math expert.\nYou must answer in English.\n\n")
+    assert prompt.endswith("within \\boxed{}.")
+    assert "Question: What is 1+1?" in prompt
 
 
-def test_informative_pair_picks_the_highest_scoring_wrong_answer():
-    candidates = [
-        ScoredCandidate("right-easy", 1, 0.2),
-        ScoredCandidate("right-hard", 1, 0.9),
-        ScoredCandidate("wrong-easy", 0, 0.1),
-        ScoredCandidate("wrong-hard", 0, 0.8),
-    ]
-    pair = pairs_for_prompt(1, "q", candidates, "informative", tau=10.0, delta_len=100)
-    assert pair is not None
-    assert pair.chosen == "right-hard"
-    assert pair.rejected == "wrong-hard"
-    assert pair.source == "hard_negative"
+def test_grade():
+    assert grade_text(r"so the answer is \boxed{6}", "6") == 1
+    assert grade_text(r"\boxed{\frac{1}{2}}", "\\frac{1}{2}") == 1
+    assert grade_text(r"\boxed{7}", "6") == 0
+    assert grade_text("no box here", "6") == 0
 
 
-def test_saturated_pair_needs_a_margin_and_all_wrong_is_dropped():
-    close = [ScoredCandidate("a", 1, 0.5), ScoredCandidate("b", 1, 0.55)]
-    assert pairs_for_prompt(1, "q", close, "all_correct", tau=0.2, delta_len=100) is None
-    wide = [ScoredCandidate("a", None, 1.0), ScoredCandidate("b" * 5, None, 0.0)]
-    kept = pairs_for_prompt(1, "q", wide, "reference_free", tau=0.5, delta_len=100)
-    assert kept is not None and kept.source == "reference_free"
-    wrong = [ScoredCandidate("a", 0, 1.0), ScoredCandidate("b", 0, 0.0)]
-    assert pairs_for_prompt(1, "q", wrong, "all_wrong", tau=0.0, delta_len=100) is None
+def test_layer_index():
+    assert probe_layer_index(0.6, 36) == 21
+    assert probe_layer_index(0.0, 36) == 0
+    assert probe_layer_index(1.0, 36) == 35
 
 
-def test_budget_keeps_verifier_pairs_from_being_crowded_out():
-    from dpo_ranker.pairs import PreferencePair
+def test_ranker_shapes():
+    d, k, batch = 2048, 8, 3
+    inst = torch.randn(batch, d)
+    resp = torch.randn(batch, k, d)
+    for cls in (PointwiseRanker, ListwiseRanker):
+        model = cls(d_in=d)
+        logits = model(inst, resp)
+        assert logits.shape == (batch, k)
+        assert count_parameters(model) < 500_000
+        print(f"{cls.__name__}: {count_parameters(model)} params")
 
-    pairs = [
-        PreferencePair(i, "q", "c", "r", "reference_free", 10.0 - i) for i in range(6)
-    ] + [PreferencePair(100, "q", "c", "r", "hard_negative", 0.1)]
-    selected = select_budget(pairs, budget=4, ranker_fraction=0.5)
-    assert len(selected) == 4
-    assert sum(pair.source == "hard_negative" for pair in selected) == 1
-    assert sum(pair.source == "reference_free" for pair in selected) == 3
+
+def test_advantage():
+    scores = torch.tensor([[1.0, 2.0, 3.0]])
+    adv = group_advantages(scores)
+    assert torch.allclose(adv.mean(), torch.tensor(0.0), atol=1e-6)
+    assert adv[0, 2] > adv[0, 0]
 
 
-def test_ranker_separates_planted_pairs():
-    torch.manual_seed(0)
-    positive = [torch.tensor([1.0, 0.0]) + 0.01 * torch.randn(2) for _ in range(32)]
-    negative = [torch.tensor([0.0, 1.0]) + 0.01 * torch.randn(2) for _ in range(32)]
-    model, stats = fit_ranker(list(zip(positive, negative)), 2, hidden=0, epochs=40, lr=0.1, weight_decay=0.0, device=torch.device("cpu"))
-    scores = score_features(model, stats, torch.stack([torch.tensor([1.0, 0.0]), torch.tensor([0.0, 1.0])]), torch.device("cpu"))
-    assert float(scores[0]) > float(scores[1])
+def test_pairwise_accuracy():
+    logits = torch.tensor([[0.9, 0.1, 0.5]])
+    labels = torch.tensor([[1.0, 0.0, 1.0]])
+    assert pairwise_accuracy(logits, labels) == 1.0
+
+
+if __name__ == "__main__":
+    for name, fn in list(globals().items()):
+        if name.startswith("test_") and callable(fn):
+            fn()
+            print(f"{name}: ok")
