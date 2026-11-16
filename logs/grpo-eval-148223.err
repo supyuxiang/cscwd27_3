@@ -1,0 +1,8 @@
+W1115 21:55:07.516000 1356814 site-packages/torch/distributed/device_mesh.py:396] It seems like pickling/unpickling of the DeviceMesh occurred before the PGs were created. This will cause PG lookup to fail when torch.compile is enabled
+Loading 4 FSDP shards:   0%|          | 0/4 [00:00<?, ?it/s]W1115 21:55:08.591000 1356814 site-packages/torch/distributed/device_mesh.py:396] It seems like pickling/unpickling of the DeviceMesh occurred before the PGs were created. This will cause PG lookup to fail when torch.compile is enabled
+W1115 21:55:08.595000 1356814 site-packages/torch/distributed/device_mesh.py:396] It seems like pickling/unpickling of the DeviceMesh occurred before the PGs were created. This will cause PG lookup to fail when torch.compile is enabled
+W1115 21:55:08.599000 1356814 site-packages/torch/distributed/device_mesh.py:396] It seems like pickling/unpickling of the DeviceMesh occurred before the PGs were created. This will cause PG lookup to fail when torch.compile is enabled
+W1115 21:55:08.612000 1356814 site-packages/torch/distributed/device_mesh.py:396] It seems like pickling/unpickling of the DeviceMesh occurred before the PGs were created. This will cause PG lookup to fail when torch.compile is enabled
+Loading 4 FSDP shards:  25%|██▌       | 1/4 [00:01<00:04,  1.57s/it]Loading 4 FSDP shards: 100%|██████████| 4/4 [00:01<00:00,  2.55it/s]
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:17<00:00, 17.38s/it]Writing model shards: 100%|██████████| 1/1 [00:17<00:00, 17.39s/it]

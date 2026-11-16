@@ -64,9 +64,13 @@ def sample_candidates(
         rows = [done[qid] for qid in sorted(done)]
         print(f"[sample] resume {len(rows)}/{len(prompts)} questions from {output}", flush=True)
 
+    def qid_of(index: int) -> int:
+        problem = problems[index]
+        return int(problem["qid"]) if "qid" in problem else index
+
     for start in range(0, len(prompts), chunk):
         chunk_rows = [start + offset for offset in range(min(chunk, len(prompts) - start))]
-        todo = [index for index in chunk_rows if index not in done]
+        todo = [index for index in chunk_rows if qid_of(index) not in done]
         if not todo:
             continue
         chunk_prompts = [prompts[index] for index in todo]
@@ -74,10 +78,11 @@ def sample_candidates(
         for offset, result in enumerate(outputs):
             index = todo[offset]
             problem = problems[index]
+            qid = qid_of(index)
             texts = [item.text.strip() for item in result.outputs]
             labels = [grade_text(text, str(problem["answer"])) for text in texts]
-            done[index] = {
-                "qid": index,
+            done[qid] = {
+                "qid": qid,
                 "question": problem["question"],
                 "answer": str(problem["answer"]),
                 "prompt": prompts[index],

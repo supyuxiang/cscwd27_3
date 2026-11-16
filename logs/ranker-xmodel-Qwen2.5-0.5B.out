@@ -1,0 +1,187 @@
+[data] Qwen2.5-0.5B files=10 langs=['en', 'es', 'tr', 'vi', 'zh'] draw=500+500 seed=42
+[ranker] kind=listwise d_in=2048 probe_layer=21 depth=0.6 val_pair_acc=0.8273026315789473
+[encoder] /data3/yxfeng/models/Qwen2.5/Qwen2.5-3B attn=flash_attention_2 device=cuda
+[subsample] Qwen2.5-0.5B en keep 500 pos + 500 neg / 32000 -> 398 questions
+[extract] Qwen2.5-0.5B en questions=398 responses=1000
+[extract] done en running_groups=398
+[subsample] Qwen2.5-0.5B es keep 500 pos + 500 neg / 32000 -> 396 questions
+[extract] Qwen2.5-0.5B es questions=396 responses=1000
+[extract] done es running_groups=794
+[subsample] Qwen2.5-0.5B tr only 367 correct / 31633 incorrect; keep 367+367 instead of 500+500
+[subsample] Qwen2.5-0.5B tr keep 367 pos + 367 neg / 32000 -> 348 questions
+[extract] Qwen2.5-0.5B tr questions=348 responses=734
+[extract] done tr running_groups=1142
+[subsample] Qwen2.5-0.5B vi keep 500 pos + 500 neg / 32000 -> 391 questions
+[extract] Qwen2.5-0.5B vi questions=391 responses=1000
+[extract] done vi running_groups=1533
+[subsample] Qwen2.5-0.5B zh keep 500 pos + 500 neg / 32000 -> 381 questions
+[extract] Qwen2.5-0.5B zh questions=381 responses=1000
+[extract] done zh running_groups=1914
+[extract] saved /data3/yxfeng/cscwd27_iraker/run1/cross_model_inlp1k/Qwen2.5-0.5B/features.pt groups=1914
+{
+  "source": "Qwen2.5-0.5B",
+  "encoder": "/data3/yxfeng/models/Qwen2.5/Qwen2.5-3B",
+  "ranker": "/data3/yxfeng/cscwd27_iraker/run1/ranker.pt",
+  "ranker_kind": "listwise",
+  "probe_layer": 21,
+  "depth": 0.6,
+  "d_in": 2048,
+  "n_pos": 500,
+  "n_neg": 500,
+  "seed": 42,
+  "decision": "score > 0 is predicted correct",
+  "note": "Test rows are the INLP draw: 500 correct + 500 incorrect per language, seed 42, taken from every judged file of that language. Hidden states are Qwen2.5-3B at the ranker's probe layer. Listwise scores use the kept responses of one question.",
+  "splits": [
+    {
+      "split": "all",
+      "questions": 1914,
+      "responses": 4734,
+      "mean_k": 2.4733542319749215,
+      "label_rate": 0.5,
+      "majority_acc": 0.5,
+      "judge_acc": 0.5194338825517533,
+      "precision": 0.5113022113022113,
+      "recall": 0.8791719476130122,
+      "f1": 0.6465744912226192,
+      "tp": 2081,
+      "tn": 378,
+      "fp": 1989,
+      "fn": 286,
+      "auroc": 0.49170246644066806,
+      "average_precision": 0.4579024934712309,
+      "pairwise_acc": 0.5155642023346303,
+      "pairwise_questions": 590,
+      "top1_acc": 0.3672936259143156,
+      "top1_acc_if_any_correct": 0.7093844601412714,
+      "lift_top1_over_label_rate": -0.13270637408568442,
+      "score_mean_correct": 5.851815700531006,
+      "score_mean_incorrect": 5.357570648193359
+    },
+    {
+      "split": "lang=en",
+      "questions": 398,
+      "responses": 1000,
+      "mean_k": 2.512562814070352,
+      "label_rate": 0.5,
+      "majority_acc": 0.5,
+      "judge_acc": 0.569,
+      "precision": 0.5382907880133185,
+      "recall": 0.97,
+      "f1": 0.6923625981441828,
+      "tp": 485,
+      "tn": 84,
+      "fp": 416,
+      "fn": 15,
+      "auroc": 0.764008,
+      "average_precision": 0.7171581739375208,
+      "pairwise_acc": 0.6890756302521008,
+      "pairwise_questions": 117,
+      "top1_acc": 0.4371859296482412,
+      "top1_acc_if_any_correct": 0.848780487804878,
+      "lift_top1_over_label_rate": -0.06281407035175879,
+      "score_mean_correct": 8.641873359680176,
+      "score_mean_incorrect": 5.572181224822998
+    },
+    {
+      "split": "lang=es",
+      "questions": 396,
+      "responses": 1000,
+      "mean_k": 2.525252525252525,
+      "label_rate": 0.5,
+      "majority_acc": 0.5,
+      "judge_acc": 0.522,
+      "precision": 0.5130641330166271,
+      "recall": 0.864,
+      "f1": 0.6438152011922503,
+      "tp": 432,
+      "tn": 90,
+      "fp": 410,
+      "fn": 68,
+      "auroc": 0.458228,
+      "average_precision": 0.44014581803558916,
+      "pairwise_acc": 0.49193548387096775,
+      "pairwise_questions": 133,
+      "top1_acc": 0.34595959595959597,
+      "top1_acc_if_any_correct": 0.6372093023255814,
+      "lift_top1_over_label_rate": -0.15404040404040403,
+      "score_mean_correct": 5.638040065765381,
+      "score_mean_incorrect": 5.480303764343262
+    },
+    {
+      "split": "lang=tr",
+      "questions": 348,
+      "responses": 734,
+      "mean_k": 2.1091954022988504,
+      "label_rate": 0.5,
+      "majority_acc": 0.5,
+      "judge_acc": 0.4822888283378747,
+      "precision": 0.4905109489051095,
+      "recall": 0.9155313351498637,
+      "f1": 0.6387832699619772,
+      "tp": 336,
+      "tn": 18,
+      "fp": 349,
+      "fn": 31,
+      "auroc": 0.2857248921589736,
+      "average_precision": 0.3716630793857879,
+      "pairwise_acc": 0.3073770491803279,
+      "pairwise_questions": 84,
+      "top1_acc": 0.3390804597701149,
+      "top1_acc_if_any_correct": 0.6666666666666666,
+      "lift_top1_over_label_rate": -0.16091954022988508,
+      "score_mean_correct": 6.200960159301758,
+      "score_mean_incorrect": 7.737353801727295
+    },
+    {
+      "split": "lang=vi",
+      "questions": 391,
+      "responses": 1000,
+      "mean_k": 2.557544757033248,
+      "label_rate": 0.5,
+      "majority_acc": 0.5,
+      "judge_acc": 0.497,
+      "precision": 0.4980443285528031,
+      "recall": 0.764,
+      "f1": 0.6029992107340173,
+      "tp": 382,
+      "tn": 115,
+      "fp": 385,
+      "fn": 118,
+      "auroc": 0.487856,
+      "average_precision": 0.4646103541149377,
+      "pairwise_acc": 0.5222672064777328,
+      "pairwise_questions": 124,
+      "top1_acc": 0.3375959079283887,
+      "top1_acc_if_any_correct": 0.6947368421052632,
+      "lift_top1_over_label_rate": -0.16240409207161127,
+      "score_mean_correct": 3.916501522064209,
+      "score_mean_incorrect": 3.918872833251953
+    },
+    {
+      "split": "lang=zh",
+      "questions": 381,
+      "responses": 1000,
+      "mean_k": 2.6246719160104988,
+      "label_rate": 0.5,
+      "majority_acc": 0.5,
+      "judge_acc": 0.517,
+      "precision": 0.5097142857142857,
+      "recall": 0.892,
+      "f1": 0.6487272727272727,
+      "tp": 446,
+      "tn": 71,
+      "fp": 429,
+      "fn": 54,
+      "auroc": 0.50622,
+      "average_precision": 0.4668427690808227,
+      "pairwise_acc": 0.5096774193548387,
+      "pairwise_questions": 132,
+      "top1_acc": 0.37270341207349084,
+      "top1_acc_if_any_correct": 0.696078431372549,
+      "lift_top1_over_label_rate": -0.12729658792650916,
+      "score_mean_correct": 4.9545745849609375,
+      "score_mean_incorrect": 4.712162971496582
+    }
+  ]
+}
+[done] /data3/yxfeng/cscwd27_iraker/run1/cross_model_inlp1k/Qwen2.5-0.5B/metrics.json

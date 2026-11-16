@@ -1,0 +1,4 @@
+[LUMIA Server]Job 148209 lauched on node node5
+[launch] gpu=0 source=Qwen2.5-0.5B
+[launch] gpu=1 source=Qwen2.5-1.5B
+[launch] gpu=2 source=Qwen2.5-7B

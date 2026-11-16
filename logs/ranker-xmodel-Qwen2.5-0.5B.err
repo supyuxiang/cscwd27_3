@@ -1,0 +1,3 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights:  79%|███████▉  | 345/434 [00:00<00:00, 3398.61it/s]Loading weights: 100%|██████████| 434/434 [00:00<00:00, 3456.36it/s]
+[W1115 18:56:18.507528294 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 3365928960 bytes (free: 2103050240, total: 25262096384).
