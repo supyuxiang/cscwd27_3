@@ -141,9 +141,14 @@ def run_sft(
     max_grad_norm: float = 1.0,
     log=print,
     swan=None,
+    seed: int = 0,
 ) -> dict:
     dataset = CompletionDataset(rows, tokenizer, max_length)
-    sampler = DistributedSampler(dataset, num_replicas=world, rank=rank, shuffle=True) if world > 1 else None
+    sampler = (
+        DistributedSampler(dataset, num_replicas=world, rank=rank, shuffle=True, seed=seed)
+        if world > 1
+        else None
+    )
     pad_id = tokenizer.pad_token_id
     loader = DataLoader(
         dataset,
