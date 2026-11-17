@@ -23,9 +23,9 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(FDU))
 
 from exp1_math.language import Language  # noqa: E402
-from iraker.features import extract_features  # noqa: E402
-from iraker.policy import load_tokenizer  # noqa: E402
-from iraker.ranker_model import load_ranker  # noqa: E402
+from ranker.features import extract_features  # noqa: E402
+from ranker.policy import load_tokenizer  # noqa: E402
+from ranker.ranker_model import load_ranker  # noqa: E402
 from transformers import AutoModelForCausalLM  # noqa: E402
 
 SAMPLED_ROOT = Path("/data3/yxfeng/fdu/exp1_math/sampled_res")

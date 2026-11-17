@@ -20,8 +20,8 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from iraker.ranker_data import pad_groups  # noqa: E402
-from iraker.ranker_model import load_ranker  # noqa: E402
+from ranker.ranker_data import pad_groups  # noqa: E402
+from ranker.ranker_model import load_ranker  # noqa: E402
 
 
 def pass_at_k(labels: list[list[int]], k: int) -> float:

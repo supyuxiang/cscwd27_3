@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from datasets import Dataset
 
-from iraker.core import build_prompt
+from ranker.core import build_prompt
 
 SRC = Path("/home/yxfeng/datasets/sft_qwen2.5-3B/en/train_sft_Qwen_math7b_instruct_correct.json")
 DEST = Path("/data3/yxfeng/cscwd27_iraker/run1/verl_data")

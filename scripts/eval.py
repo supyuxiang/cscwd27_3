@@ -8,8 +8,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from iraker.core import write_json  # noqa: E402
-from iraker.evaluate import DEFAULT_SETS, evaluate_model  # noqa: E402
+from ranker.core import write_json  # noqa: E402
+from ranker.evaluate import DEFAULT_SETS, evaluate_model  # noqa: E402
 
 
 def main() -> None:

@@ -10,9 +10,9 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from iraker.core import read_jsonl  # noqa: E402
-from iraker.features import decoder_layers, extract_features  # noqa: E402
-from iraker.policy import load_policy, load_tokenizer  # noqa: E402
+from ranker.core import read_jsonl  # noqa: E402
+from ranker.features import decoder_layers, extract_features  # noqa: E402
+from ranker.policy import load_policy, load_tokenizer  # noqa: E402
 
 
 def main() -> None:

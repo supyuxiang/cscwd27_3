@@ -17,16 +17,16 @@ import torch.distributed as dist  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from iraker.core import barrier, build_prompt, grade_text, init_distributed, set_seed, write_json  # noqa: E402
-from iraker.evaluate import DEFAULT_SETS, evaluate_model  # noqa: E402
-from iraker.grpo import group_advantages, grpo_step_verifier  # noqa: E402
-from iraker.policy import load_policy, load_tokenizer, save_policy, wrap_ddp  # noqa: E402
-from iraker.swan import SwanLog  # noqa: E402
+from ranker.core import barrier, build_prompt, grade_text, init_distributed, set_seed, write_json  # noqa: E402
+from ranker.evaluate import DEFAULT_SETS, evaluate_model  # noqa: E402
+from ranker.grpo import group_advantages, grpo_step_verifier  # noqa: E402
+from ranker.policy import load_policy, load_tokenizer, save_policy, wrap_ddp  # noqa: E402
+from ranker.swan import SwanLog  # noqa: E402
 
 
 def sample_group(model_path: str, questions: list[str], args, sampler_gpu: int | None) -> list[list[dict]]:
     """Sample G completions per question on a dedicated GPU via a subprocess."""
-    from iraker.sampler import sample_with_worker
+    from ranker.sampler import sample_with_worker
 
     return sample_with_worker(
         model_path,

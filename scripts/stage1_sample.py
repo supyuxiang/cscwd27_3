@@ -9,8 +9,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from iraker.core import write_jsonl  # noqa: E402
-from iraker.sampling import sample_candidates  # noqa: E402
+from ranker.core import write_jsonl  # noqa: E402
+from ranker.sampling import sample_candidates  # noqa: E402
 
 
 def main() -> None:

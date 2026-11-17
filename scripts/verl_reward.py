@@ -12,7 +12,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from iraker.core import grade_text
+from ranker.core import grade_text
 
 
 def compute_score(data_source, solution_str, ground_truth, extra_info=None, **kwargs) -> float:

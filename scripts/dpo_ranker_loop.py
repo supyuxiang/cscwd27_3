@@ -22,11 +22,11 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from iraker.core import read_jsonl, write_json, write_jsonl  # noqa: E402
-from iraker.features import decoder_layers, extract_features  # noqa: E402
-from iraker.policy import load_policy, load_tokenizer  # noqa: E402
-from iraker.ranker_model import load_ranker  # noqa: E402
-from iraker.ranker_train import train_ranker  # noqa: E402
+from ranker.core import read_jsonl, write_json, write_jsonl  # noqa: E402
+from ranker.features import decoder_layers, extract_features  # noqa: E402
+from ranker.policy import load_policy, load_tokenizer  # noqa: E402
+from ranker.ranker_model import load_ranker  # noqa: E402
+from ranker.ranker_train import train_ranker  # noqa: E402
 
 
 def _train_rows(path: str, limit: int) -> list[dict]:
@@ -37,7 +37,7 @@ def _train_rows(path: str, limit: int) -> list[dict]:
 
 
 def cmd_sample(args: argparse.Namespace) -> None:
-    from iraker.sampling import sample_candidates
+    from ranker.sampling import sample_candidates
 
     rows = _train_rows(args.train_json, args.limit)
     picked = [i for i in range(len(rows)) if i % args.shards == args.shard]
@@ -350,8 +350,8 @@ def cmd_random_pairs(args: argparse.Namespace) -> None:
 
 
 def cmd_dpo(args: argparse.Namespace) -> None:
-    from iraker.dpo import train_dpo
-    from iraker.swan import SwanLog
+    from ranker.dpo import train_dpo
+    from ranker.swan import SwanLog
 
     rows = read_jsonl(args.pairs)
     swan = SwanLog(

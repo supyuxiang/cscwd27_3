@@ -18,12 +18,12 @@ import torch.distributed as dist
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from iraker.core import barrier, init_distributed, set_seed, write_json  # noqa: E402
-from iraker.evaluate import DEFAULT_SETS, evaluate_model  # noqa: E402
-from iraker.policy import load_policy, load_tokenizer, run_sft, save_policy, wrap_ddp  # noqa: E402
-from iraker.ranker_model import load_ranker  # noqa: E402
-from iraker.ranker_data import pad_groups  # noqa: E402
-from iraker.swan import SwanLog  # noqa: E402
+from ranker.core import barrier, init_distributed, set_seed, write_json  # noqa: E402
+from ranker.evaluate import DEFAULT_SETS, evaluate_model  # noqa: E402
+from ranker.policy import load_policy, load_tokenizer, run_sft, save_policy, wrap_ddp  # noqa: E402
+from ranker.ranker_model import load_ranker  # noqa: E402
+from ranker.ranker_data import pad_groups  # noqa: E402
+from ranker.swan import SwanLog  # noqa: E402
 
 
 def select_best(ranker_path: str, groups: list[dict], keep: int) -> list[dict]:

@@ -10,7 +10,7 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from iraker.ranker_train import train_ranker  # noqa: E402
+from ranker.ranker_train import train_ranker  # noqa: E402
 
 
 def main() -> None:

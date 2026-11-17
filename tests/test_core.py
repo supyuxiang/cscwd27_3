@@ -9,9 +9,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import torch
 
-from iraker.core import build_prompt, grade_text, probe_layer_index
-from iraker.grpo import group_advantages
-from iraker.ranker_model import ListwiseRanker, PointwiseRanker, count_parameters, pairwise_accuracy
+from ranker.core import build_prompt, grade_text, probe_layer_index
+from ranker.grpo import group_advantages
+from ranker.ranker_model import ListwiseRanker, PointwiseRanker, count_parameters, pairwise_accuracy
 
 
 def test_prompt_matches_eval():
