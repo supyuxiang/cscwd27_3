@@ -25,11 +25,19 @@ def get_pooling_fn(pooling_mode: str):
     assert pooling_mode in ['last', 'mean']
     
     def _last(hidden_states: torch.Tensor, attention_mask: torch.Tensor):
-        pass
+        # hs: bsz, seq_len, d_model
+        # attention_mask: bsz, seq_len
+        last_indices = (attention_mask.sum(dim=-1, keepdim=False) -1).clamp(min=0) # bsz,
+        return hidden_states[
+            torch.arange(len(hidden_states)),
+            last_indices,
+        ]
 
     def _mean(hidden_states: torch.Tensor, attention_mask: torch.Tensor):
-        pass
+        hs = (hidden_states * attention_mask.unsqueeze(-1)).sum(dom=1) / attention_mask.sum(dim=-1)
+        return hs
 
+        
     return _last if pooling_mode == 'last' else _mean
 
 
@@ -68,12 +76,12 @@ def sampling(
         inputs = {k:v.to(device) for k,v in inputs.items()}
         attention_mask = inputs['attention_mask']
 
-        hs = model(**inputs, output_hidden_states=True).hidden_states.detach().cpu()
+        hs = model(**inputs, output_hidden_states=True).hidden_states
 
         for layer in hs_by_layer:
             hs = hs[layer] # torch.Tensor, bsz, seq_len, d_model
             hs = pooling_fn(hidden_states=hs, attention_mask=attention_mask) # bsz, d_model
-            hs_by_layer[layer].append(hs)
+            hs_by_layer[layer].append(hs.copy().detach().cpu())
         del inputs, attention_mask, hs
         gc.collect()
         torch.cuda.empty_cache()
