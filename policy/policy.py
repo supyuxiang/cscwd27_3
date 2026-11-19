@@ -17,6 +17,8 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 def load_tokenizer(path: str):
     tokenizer = AutoTokenizer.from_pretrained(path, trust_remote_code=True)
     if tokenizer.pad_token_id is None:
+        tokenizer.pad_token_id = tokenizer.eos_token_id
+    if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
     return tokenizer

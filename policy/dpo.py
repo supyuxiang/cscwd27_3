@@ -1,11 +1,3 @@
-"""Length-sum DPO on one chosen/rejected pair per question.
-
-The reference policy is the checkpoint DPO starts from. Its sequence logprobs
-are cached before LoRA training so the reference weights are not kept on GPU.
-Log-softmax runs over short token chunks: a full fp32 [seq, vocab] tensor is
-about 1.8GB at seq=3200 and deadlocks a 24GB card.
-"""
-
 from __future__ import annotations
 
 import math

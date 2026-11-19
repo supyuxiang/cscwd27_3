@@ -82,7 +82,7 @@ def _vllm_sample(
 
     command = [
         sys.executable,
-        str(ROOT / "scripts" / "vllm_eval_worker.py"),
+        str(ROOT / "eval" / "vllm_worker.py"),
         "--model", model_path,
         "--questions", str(questions_path),
         "--output", str(output_path),
@@ -148,3 +148,41 @@ def evaluate_model(
     results["macro_avg"] = float(np.mean([r["mean_acc"] for r in results.values() if isinstance(r, dict)]))
     log(f"[eval] macro avg@{n_sampling} = {results['macro_avg']:.2f}")
     return results
+
+
+def main() -> None:
+    import argparse
+
+    from generator.utils import write_json
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model", required=True, help="base model or a saved checkpoint dir")
+    parser.add_argument("--output", default="")
+    parser.add_argument("--sets", default=",".join(DEFAULT_SETS))
+    parser.add_argument("--limit", type=int, default=0)
+    parser.add_argument("--n-sampling", type=int, default=4)
+    parser.add_argument("--temperature", type=float, default=0.7)
+    parser.add_argument("--top-p", type=float, default=0.95)
+    parser.add_argument("--max-new-tokens", type=int, default=3072)
+    parser.add_argument("--gpu", type=int, default=0)
+    args = parser.parse_args()
+
+    results = evaluate_model(
+        args.model,
+        datasets=tuple(item.strip() for item in args.sets.split(",") if item.strip()),
+        n_sampling=args.n_sampling,
+        temperature=args.temperature,
+        max_new_tokens=args.max_new_tokens,
+        limit=args.limit,
+        gpu=args.gpu,
+        top_p=args.top_p,
+    )
+    if args.output:
+        write_json(args.output, results)
+        print(f"[eval] wrote {args.output}")
+    else:
+        print(results)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,6 +1,3 @@
-"""Thin SwanLab wrapper. Only rank 0 logs, and a missing key or network error
-degrades to console logging instead of killing the run."""
-
 from __future__ import annotations
 
 import os
