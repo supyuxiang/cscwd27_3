@@ -166,7 +166,7 @@ def masked_lm_loss(
     logp = F.log_softmax(logits_shift, dim=-1) # bsz, seq_len-1, vocab_size
     tgt = input_ids[:, 1:].unsqueeze(-1) # bsz, seq_len-1, 1
 
-    nll = -logp.gather(dim=-1, indx=tgt).squeeze(-1) # bsz, seq_len-1 -> bsz, seq_len-1, 1
+    nll = -logp.gather(dim=-1, index=tgt).squeeze(-1) # bsz, seq_len-1 -> bsz, seq_len-1, 1
     entropy = -(logp.exp() * logp).sum(dim=-1) # bsz, seq_len-1
     mask = loss_mask[:, 1:] # bsz, seq_len-1
     denom = mask.sum().clamp_min(1.0)
