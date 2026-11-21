@@ -583,67 +583,49 @@ class OpenR1ResponseDataset(torch.utils.data.Dataset):
     """
 
     def __init__(self, parquet_files, tokenizer, max_length=4096, min_rows=5000, max_samples=-1):
-        import pyarrow.parquet as pq
+        import pandas as pd
 
         if isinstance(parquet_files, (str, Path)):
             files = [str(parquet_files)]
         else:
             files = [str(path) for path in parquet_files]
-        if not files:
+        if len(files) == 0:
             raise ValueError("parquet_files is empty")
 
         max_length = int(max_length)
-        texts = []
-        kinds = []
-        for path in files:
-            table = pq.read_table(path, columns=["problem", "generations"])
-            problems = table.column("problem").to_pylist()
-            generations = table.column("generations").to_pylist()
-            for row_index, (problem, responses) in enumerate(zip(problems, generations, strict=True)):
-                if not isinstance(problem, str) or not problem.strip():
-                    continue
-                texts.append(problem)
-                kinds.append(("q", row_index, path))
-                for response in list(responses or []):
-                    if isinstance(response, str) and response.strip():
-                        texts.append(response)
-                        kinds.append(("r", row_index, path))
-
-        # Long responses are tokenized only so they can be dropped. Raising the limit
-        # avoids a warning for those rows; the kept sequences are still <= max_length.
-        previous_max_length = getattr(tokenizer, "model_max_length", None)
-        tokenizer.model_max_length = 10**12
-        try:
-            encoded = tokenizer(texts, add_special_tokens=False, return_attention_mask=False)["input_ids"]
-        finally:
-            if previous_max_length is not None:
-                tokenizer.model_max_length = previous_max_length
-        question_tokens = {}
         kept_ids = []
         prompt_lengths = []
         eos_id = tokenizer.eos_token_id
         n_pairs = 0
         n_with_eos = 0
-        for token_ids, (kind, row_index, path) in zip(encoded, kinds, strict=True):
-            key = (path, row_index)
-            if kind == "q":
-                question_tokens[key] = list(token_ids)
-                continue
-            n_pairs += 1
-            question = question_tokens[key]
-            if len(question) + len(token_ids) > max_length:
-                continue
-            sequence = question + list(token_ids)
-            added_eos = False
-            if eos_id is not None and len(sequence) < max_length and sequence[-1] != eos_id:
-                sequence.append(eos_id)
-                added_eos = True
-            if len(sequence) > max_length or len(question) >= len(sequence):
-                continue
-            if added_eos:
-                n_with_eos += 1
-            kept_ids.append(torch.tensor(sequence, dtype=torch.long))
-            prompt_lengths.append(len(question))
+        for path in files:
+            df = pd.read_parquet(path, columns=["problem", "generations"])
+            problem_ls = df["problem"].tolist()
+            generation_ls = df["generations"].tolist()
+            for problem, responses in zip(problem_ls, generation_ls):
+                if not isinstance(problem, str) or problem.strip() == "":
+                    continue
+                question_ids = tokenizer.encode(problem, add_special_tokens=False, truncation=False)
+                if responses is None:
+                    continue
+                for response in responses:
+                    if not isinstance(response, str) or response.strip() == "":
+                        continue
+                    n_pairs += 1
+                    response_ids = tokenizer.encode(response, add_special_tokens=False, truncation=False)
+                    if len(question_ids) + len(response_ids) > max_length:
+                        continue
+                    sequence = list(question_ids) + list(response_ids)
+                    added_eos = False
+                    if eos_id is not None and len(sequence) < max_length and sequence[-1] != eos_id:
+                        sequence.append(eos_id)
+                        added_eos = True
+                    if len(sequence) > max_length or len(question_ids) >= len(sequence):
+                        continue
+                    if added_eos:
+                        n_with_eos += 1
+                    kept_ids.append(torch.tensor(sequence, dtype=torch.long))
+                    prompt_lengths.append(len(question_ids))
 
         n_filtered = len(kept_ids)
         if n_filtered < int(min_rows):
