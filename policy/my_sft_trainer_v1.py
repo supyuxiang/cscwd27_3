@@ -607,16 +607,17 @@ class SFTTrainer:
         self.device = torch.device('cuda')
 
         seed = int(config.trainer.get("seed", 1))
-        random.seed(seed)
-        np.random.seed(seed)
-        torch.manual_seed(seed)
-        torch.cuda.manual_seed_all(seed)
+        set_seed(seed)
 
         self._build_dataset()
         self.tokenizer = self.train_dataset.tokenizer
+
         self._build_dataloader()
+
         self._build_model()
+
         self._build_optim()
+        
         self._prepare_probe_samples()
 
     def _build_dataset(self):
