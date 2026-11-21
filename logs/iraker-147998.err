@@ -1,15 +1,0 @@
-[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
-Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights: 100%|██████████| 434/434 [00:00<00:00, 6363.78it/s]
-Traceback (most recent call last):
-  File "/home/yxfeng/cscwd27_iraker/scripts/stage3_ranker.py", line 50, in <module>
-    main()
-  File "/home/yxfeng/cscwd27_iraker/scripts/stage3_ranker.py", line 32, in main
-    _, metrics = train_ranker(
-                 ^^^^^^^^^^^^^
-  File "/home/yxfeng/cscwd27_iraker/iraker/ranker_train.py", line 39, in train_ranker
-    train, val = split_groups(groups, val_ratio, seed)
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/yxfeng/cscwd27_iraker/iraker/ranker_data.py", line 51, in split_groups
-    informative = [g for g in groups if g["has_pos"] and g["has_neg"]]
-                                        ~^^^^^^^^^^^
-KeyError: 'has_pos'

@@ -1,5 +1,0 @@
-usage: eval.py [-h] --model MODEL [--output OUTPUT] [--sets SETS]
-               [--limit LIMIT] [--n-sampling N_SAMPLING]
-               [--temperature TEMPERATURE] [--max-new-tokens MAX_NEW_TOKENS]
-               [--gpu GPU]
-eval.py: error: unrecognized arguments: --top-p 0.95

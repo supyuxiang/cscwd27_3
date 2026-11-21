@@ -1,6 +1,0 @@
-[LUMIA Server]Job 148124 lauched on node node4
-(MainProcess pid=382650) INFO 11-15 13:34:56 [api_utils.py:286] non-default args: {'trust_remote_code': True, 'dtype': 'bfloat16', 'max_model_len': 6144, 'gpu_memory_utilization': 0.85, 'disable_log_stats': True, 'model': '/data3/yxfeng/cscwd27_iraker/run1/sft/policy_sft'}
-(MainProcess pid=382650) INFO 11-15 13:34:56 [model.py:733] Resolved architecture: Qwen2ForCausalLM
-(MainProcess pid=382650) INFO 11-15 13:34:56 [model.py:2152] Using max model len 6144
-(MainProcess pid=382650) INFO 11-15 13:34:56 [scheduler.py:307] Chunked prefill is enabled with max_num_batched_tokens=8192.
-(MainProcess pid=382650) INFO 11-15 13:34:56 [kernel.py:467] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])

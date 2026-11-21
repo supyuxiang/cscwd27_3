@@ -1,8 +1,0 @@
-[LUMIA Server]Job 148146 lauched on node node4
-[eval] aime24   n=30 avg@4=2.50
-[eval] aime25   n=30 avg@4=1.67
-[eval] aime26   n=30 avg@4=2.50
-[eval] amc23    n=40 avg@4=21.25
-[eval] macro avg@4 = 6.98
-[eval] wrote /data3/yxfeng/cscwd27_iraker/run1/base_aime_amc.json
-BASE_EVAL_DONE

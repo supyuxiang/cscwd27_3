@@ -1,0 +1,84 @@
+# Primary config for policy/sft.py.
+# Group files (model, engine, optim, profiler) come from the vendored verl trainer config.
+# _self_ is last so the values in this file override those groups.
+
+defaults:
+  - model@model: hf_model
+  - engine@engine: fsdp
+  - optim@optim: fsdp
+  - profiler@profiler: profiler
+  - _self_
+
+hydra:
+  searchpath:
+    - file:///home/yxfeng/cscwd27_ranker/verl/verl/trainer/config
+  job:
+    chdir: false
+
+data:
+  train_batch_size: 16
+  micro_batch_size_per_gpu: 1
+  max_token_len_per_gpu: 4096
+  use_dynamic_bsz: False
+  train_files: /data3/yxfeng/datasets/OpenR1-Math-220k/extended/train-00000-of-00010.parquet
+  val_files: null
+  train_max_samples: -1
+  val_max_samples: -1
+  messages_key: messages
+  tools_key: tools
+  enable_thinking_key: enable_thinking
+  enable_thinking_default: null
+  pad_mode: no_padding
+  max_length: 4096
+  truncation: error
+  balance_dp_token: False
+  custom_cls:
+    path: null
+    name: null
+  use_shm: False
+  apply_chat_template_kwargs: {}
+  num_workers: 0
+  ignore_input_ids_mismatch: False
+  # Kept rows must be at least this many after the question+response length filter.
+  min_rows: 5000
+
+checkpoint:
+  _target_: verl.trainer.config.CheckpointConfig
+  save_contents: ["model", "optimizer", "extra"]
+  load_contents: ${checkpoint.save_contents}
+
+trainer:
+  default_local_dir: /data3/yxfeng/cscwd27_ranker/sft/deepseek-math-7b-openr1-ext
+  default_hdfs_dir: null
+  project_name: openr1-sft
+  experiment_name: deepseek-math-7b-ext-shard0
+  total_epochs: 2
+  total_training_steps: null
+  logger: ["console", "swanlab"]
+  seed: 1
+  save_freq: after_each_epoch
+  test_freq: -1
+  max_ckpt_to_keep: null
+  balance_batch: True
+  resume_mode: auto
+  resume_from_path: null
+  device: cuda
+  nnodes: 1
+  n_gpus_per_node: 4
+  profile_interval: [-1, -1]
+
+model:
+  path: /data3/yxfeng/models/deepseek/deepseek-math-7b-base
+  lora_rank: 0
+  enable_gradient_checkpointing: True
+  use_remove_padding: True
+  trust_remote_code: False
+
+engine:
+  model_dtype: bf16
+  strategy: fsdp
+
+optim:
+  lr: 2.0e-5
+  lr_scheduler_type: cosine
+  lr_warmup_steps_ratio: 0.03
