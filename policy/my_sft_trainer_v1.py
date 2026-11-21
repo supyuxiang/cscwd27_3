@@ -609,6 +609,8 @@ class SFTTrainer:
         seed = int(config.trainer.get("seed", 1))
         set_seed(seed)
 
+        self._build_logger()
+
         self._build_dataset()
         self.tokenizer = self.train_dataset.tokenizer
 
@@ -619,6 +621,13 @@ class SFTTrainer:
         self._build_optim()
         
         self._prepare_probe_samples()
+
+    def _build_logger(self):
+        self.swanlab_logger = SwanlabLogger(
+            project_name=self.config.trainer.project_name,
+            experiment_name=self.config.trainer.experiment_name,
+            config=OmegaConf.to_container(self.config, resolve=True)
+        )
 
     def _build_dataset(self):
         tok_path = _expand_path(self.config.model.get("tokenizer_path") or self.config.model.path)
@@ -903,11 +912,6 @@ class SFTTrainer:
         }
 
     def fit(self):
-        swanlab_logger = SwanlabLogger(
-            project_name=self.config.trainer.project_name,
-            experiment_name=self.config.trainer.experiment_name,
-            config=OmegaConf.to_container(self.config, resolve=True)
-        )
 
         print(f"Total training steps: {self.total_training_steps}")
         self.model.train()
@@ -980,7 +984,7 @@ class SFTTrainer:
                             lr=f"{metrics['train/lr']:.2e}",
                         )
 
-                swanlab_logger.log(data=metrics, step=global_step)
+                self.swanlab_logger.log(data=metrics, step=global_step)
 
                 if self.val_dataloader is not None and (is_last_step or is_valid_step):
                     last_valid_metric = self._eval()
@@ -988,7 +992,7 @@ class SFTTrainer:
                         f"[eval {global_step}] val_loss={last_valid_metric['val/loss']:.4f} "
                         f"val_ppl={last_valid_metric['val/ppl']:.2f}"
                     )
-                    swanlab_logger.log(data=last_valid_metric, step=global_step)
+                    self.swanlab_logger.log(data=last_valid_metric, step=global_step)
 
                 if is_last_step or is_save_step:
                     self._save(global_step)
