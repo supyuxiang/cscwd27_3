@@ -1,0 +1,21 @@
+[LUMIA Server]Job 151756 lauched on node node11
+swanlab: Currently logged in as: yuxiang to https://api.swanlab.cn. Use `swanlab
+login --relogin` to force relogin
+swanlab: Tracking run with swanlab version 0.10.4
+swanlab: 💾 Run data saved at swanlog/run-20261121_163011-13mt7qks
+swanlab: 📁 View project at https://swanlab.cn/@yuuxiang/gsm8k-sft
+swanlab: 🚀 View run qwen2.5-0.5b-full at 
+https://swanlab.cn/@yuuxiang/gsm8k-sft/runs/13mt7qks
+[data] 7473 from ['/data3/yxfeng/datasets/gsm8k/sft_base/train.json']
+[data] length ok: n=7473 max_seen=483 <= 768
+[data] 1319 from ['/data3/yxfeng/datasets/gsm8k/sft_base/test.json']
+[data] length ok: n=1319 max_seen=441 <= 768
+[train] device=cuda samples=7473 micro=16 accum=2 steps/epoch=233 total_steps=466
+[model] full fine-tune
+Total training steps: 466
+swanlab: 📁 View project at https://swanlab.cn/@yuuxiang/gsm8k-sft
+swanlab: 🚀 View run qwen2.5-0.5b-full at 
+https://swanlab.cn/@yuuxiang/gsm8k-sft/runs/13mt7qks
+swanlab: Upload complete: 35 records
+2026-11-21 16:30:18.981 | WARNING  | swanlab.sdk.cmd.guard:wrapper:55 - SwanLab 
+Run has already finished or has not started.

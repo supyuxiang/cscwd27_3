@@ -1,0 +1,16 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights: 100%|██████████| 290/290 [00:00<00:00, 7495.00it/s]
+Epoch 1/2:   0%|          | 0/467 [00:00<?, ?it/s]Epoch 1/2:   0%|          | 0/467 [00:00<?, ?it/s]
+Error executing job with overrides: []
+Traceback (most recent call last):
+  File "/home/yxfeng/cscwd27_ranker/policy/my_sft_trainer_v1.py", line 794, in main
+    trainer.fit()
+  File "/home/yxfeng/cscwd27_ranker/policy/my_sft_trainer_v1.py", line 720, in fit
+    loss, n_tok, entropy = masked_lm_loss(logits, input_ids, loss_mask)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yxfeng/cscwd27_ranker/policy/my_sft_trainer_v1.py", line 169, in masked_lm_loss
+    nll = -logp.gather(dim=-1, indx=tgt).squeeze(-1) # bsz, seq_len-1 -> bsz, seq_len-1, 1
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: gather() missing 1 required positional arguments: "index"
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
