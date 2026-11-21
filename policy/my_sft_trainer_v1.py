@@ -283,15 +283,10 @@ class MySFTDataset_Base(Dataset):
             golden_res = str(item["golden_res"])
             prompt = self.prompt.build_prompt(question=question)
 
-            # check
+            # 分开编码再拼接。整段重编码时，Answer:\n 会和回答开头并成另一个 token。
             prompt_ids = self.tokenizer.encode(prompt)
-            full_ids = self.tokenizer.encode(prompt + golden_res)
-            if full_ids[: len(prompt_ids)] != prompt_ids:
-                raise ValueError(
-                    "Prompt tokenization is not a prefix of full tokenization"
-                )
-            #
-            
+            response_ids = self.tokenizer.encode(golden_res, add_special_tokens=False)
+            full_ids = prompt_ids + response_ids
             num_masked_tokens = len(prompt_ids)
             sequence_ls.append(
                 (
@@ -337,8 +332,8 @@ class MySFTDataset_Base(Dataset):
         return len(self.sequence_ls)
 
 
-    def _tokenize_sequence(self, sequence: str, num_masked_tokens:int):
-        input_ids = torch.tensor(self.tokenizer.encode(sequence))
+    def _tokenize_sequence(self, full_ids: torch.Tensor, num_masked_tokens:int):
+        input_ids = torch.tensor(full_ids)
         loss_mask = torch.zeros_like(input_ids)
         attention_mask = torch.ones_like(input_ids)
 
@@ -383,8 +378,8 @@ class MySFTDataset_Base(Dataset):
 
         
     def __getitem__(self, idx: int) -> dict[str, torch.Tensor]:
-        sequence, num_masked_tokens = self.sequence_ls[idx]
-        input_ids, loss_mask, attention_mask = self._tokenize_sequence(sequence, num_masked_tokens)
+        full_ids, num_masked_tokens = self.sequence_ls[idx]
+        input_ids, loss_mask, attention_mask = self._tokenize_sequence(full_ids, num_masked_tokens)
 
         position_ids = torch.arange(input_ids.shape[0], dtype=torch.long)
         
@@ -430,23 +425,9 @@ class Prompt_Instruct:
             add_generation_prompt=add_generation_prompt
         )
 
-    @property
-    def num_system_prompt_tokens(self, add_generation_prompt: bool=True):
-        msg1 = [
-            {'role':'system','content':''}
-        ]
-        prompt1 = self.tokenizer.apply_chat_template(
-            msg1,
-            add_generation_prompt=add_generation_prompt,
-            tokenize=False
-        )
-        return len(self.tokenizer.encode(prompt1))
-
-
 
 
 class MySFTDataset_Instruct(Dataset):
-
     def __init__(
         self,
         json_files: str | list[str],
@@ -458,7 +439,6 @@ class MySFTDataset_Instruct(Dataset):
         self.pad_mode = DatasetPadMode.RIGHT
         self.truncation = truncation # error, left, right
         self.max_length = int(config.get("max_length", 4096))
-        self.apply_chat_template_kwargs = _as_plain_dict(config.get("apply_chat_template_kwargs", {})) # default: {}
         self.shuffle = bool(config.get("shuffle", False))
         self.seed = config.get("seed",42)
         self.max_samples = max_samples
@@ -470,14 +450,9 @@ class MySFTDataset_Instruct(Dataset):
         ]
 
         self.tokenizer = my_hf_tokenizer(str(tokenizer_path))
+        self.prompt = Prompt_Instruct(self.tokenizer)
 
-        # 模板自带的 system 前缀 / assistant 生成前缀（token ids），用来切 loss_mask
-        self.system_prompt_ids, self.generation_prompt_ids = extract_system_prompt_and_generation(
-            self.tokenizer, **self.apply_chat_template_kwargs
-        )
-
-        self._read_files_and_process() # get self.messages
-        self._sanity_check_first()
+        self._read_files_and_process()
 
     def _read_files_and_process(self):
         data: list[dict] = []
@@ -499,39 +474,46 @@ class MySFTDataset_Instruct(Dataset):
         else:
             print(f"[data] {total} from {self.json_files}")
 
-        messages = []
+        sequence_ls = []
         for item in data:
             question = str(item["question"])
             golden_res = str(item["golden_res"])
-            item_lang = str(item['lang'])
+            prompt = self.prompt.build_prompt(question=question)
 
-            language = Language(str(item_lang))
-            user_prompt = language.user_prompt
-
-            # NOTE: 不考虑人为加入system prompt
-            messages.append(
-                [
-                    {"role": "user", "content": user_prompt.replace("{question}", question)},
-                    {"role": "assistant", "content": golden_res},
-                ]
+            # 分开编码再拼接。整段重编码时，模板结尾会和回答开头并成另一个 token。
+            prompt_ids = self.tokenizer.encode(prompt, add_special_tokens=False)
+            response_ids = self.tokenizer.encode(golden_res, add_special_tokens=False)
+            full_ids = prompt_ids + response_ids
+            num_masked_tokens = len(prompt_ids)
+            sequence_ls.append(
+                (
+                    full_ids,
+                    num_masked_tokens
+                )
             )
 
-        # Drop samples longer than max_length (truncation='error' path).
-        kept: list[list[dict]] = []
+        kept = []
         dropped = 0
         max_seen = 0
-        for msgs in messages:
-            ids, _, _ = self._tokenize_conversation(msgs)
-            seq_len = int(ids.shape[0])
+        for full_ids, num_masked_tokens in sequence_ls:
+            seq_len = len(full_ids)
             max_seen = max(max_seen, seq_len)
+
             if seq_len > self.max_length:
                 dropped += 1
                 continue
-            kept.append(msgs)
+
+            kept.append(
+                (
+                    full_ids,
+                    num_masked_tokens
+                )
+            )
         assert kept, (
-            f"all {len(messages)} samples exceed max_length={self.max_length} "
+            f"all {len(sequence_ls)} samples exceed max_length={self.max_length} "
             f"(max_seen={max_seen})"
         )
+
         if dropped:
             print(
                 f"[data] filter length>{self.max_length}: "
@@ -539,61 +521,18 @@ class MySFTDataset_Instruct(Dataset):
             )
         else:
             print(f"[data] length ok: n={len(kept)} max_seen={max_seen} <= {self.max_length}")
-        self.messages = kept
+        self.sequence_ls = kept
 
     def __len__(self) -> int:
-        return len(self.messages)
+        return len(self.sequence_ls)
 
-    def _apply_template(self, messages: list[dict], add_generation_prompt: bool = False):
-        return self.tokenizer.apply_chat_template(
-            messages,
-            add_generation_prompt=add_generation_prompt,
-            tokenize=True,
-            return_dict=True,
-            return_tensors="pt",
-            **self.apply_chat_template_kwargs,
-        )
+    def _tokenize_sequence(self, full_ids, num_masked_tokens: int):
+        input_ids = torch.tensor(full_ids)
+        loss_mask = torch.zeros_like(input_ids)
+        attention_mask = torch.ones_like(input_ids)
 
-    def _process_single_message(
-        self,
-        index: int,
-        message: dict[str, Any],
-    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
-        """单轮 tokenize。index>0 时去掉模板重复注入的默认 system 前缀（Qwen chat）。"""
-        encoded = dict(
-            self._apply_template(
-                [message],
-                add_generation_prompt=False
-            )
-        )
-        input_ids = encoded["input_ids"][0] # [seq_len]
-        attention_mask = encoded["attention_mask"][0] # [seq_len]
+        loss_mask[num_masked_tokens:] = 1
 
-        if index != 0 and message["role"] != "system":
-            n_sys = len(self.system_prompt_ids)
-            input_ids = input_ids[n_sys:]
-            attention_mask = attention_mask[n_sys:]
-
-        if message["role"] == "assistant":
-            loss_mask = torch.ones_like(attention_mask)
-            n_gen = len(self.generation_prompt_ids)
-            loss_mask[:n_gen] = 0
-        else: # system or user
-            loss_mask = torch.zeros_like(attention_mask)
-
-        return input_ids, loss_mask, attention_mask
-
-    def _tokenize_conversation(self, messages: list[dict[str, str]]):
-        input_ids, loss_mask, attention_mask = [], [], []
-        for i, message in enumerate(messages):
-            ids, lmask, amask = self._process_single_message(i, message)
-            input_ids.append(ids) # [seq_len]
-            loss_mask.append(lmask) # [seq_len]
-            attention_mask.append(amask) # [seq_len]
-
-        input_ids = torch.cat(input_ids, dim=0) # [SEQ_LEN]
-        loss_mask = torch.cat(loss_mask, dim=0) # [SEQ_LEN]
-        attention_mask = torch.cat(attention_mask, dim=0) # [SEQ_LEN]
         assert input_ids.shape == loss_mask.shape == attention_mask.shape
         return input_ids, loss_mask, attention_mask
 
@@ -605,19 +544,36 @@ class MySFTDataset_Instruct(Dataset):
         if seq_len < self.max_length:
             pad = self.max_length - seq_len
             pad_id = self.tokenizer.pad_token_id
-            input_ids = F.pad(input_ids, (0, pad), value=pad_id) #左边补0个，右边补pad个pad_id
-            attention_mask = F.pad(attention_mask, (0, pad), value=0) #左边补0个，右边补pad个0
-            loss_mask = F.pad(loss_mask, (0, pad), value=0) #左边补0个，右边补pad个0
-            position_ids = F.pad(position_ids, (0, pad), value=0) #左边补0个，右边补pad个0
+
+            input_ids = F.pad(input_ids, (0, pad), value=pad_id)
+            attention_mask = F.pad(attention_mask, (0, pad), value=0)
+            loss_mask = F.pad(loss_mask, (0, pad), value=0)
+            position_ids = F.pad(position_ids, (0, pad), value=0)
             return input_ids, loss_mask, attention_mask, position_ids
 
-        # 我们默认truncation='error'
-        raise ValueError(f"{seq_len=} is larger than {self.max_length=}")
+        if self.truncation == 'error':
+            raise ValueError(f"{seq_len=} is larger than {self.max_length=}")
+        elif self.truncation == 'right':
+            input_ids = input_ids[: self.max_length]
+            attention_mask = attention_mask[: self.max_length]
+            loss_mask = loss_mask[: self.max_length]
+            position_ids = position_ids[: self.max_length]
+        elif self.truncation == 'left':
+            start = seq_len - self.max_length
+            input_ids = input_ids[start:]
+            attention_mask = attention_mask[start:]
+            loss_mask = loss_mask[start:]
+            position_ids = position_ids[start:]
+        else:
+            raise NotImplementedError
+        return input_ids, loss_mask, attention_mask, position_ids
 
     def __getitem__(self, idx: int) -> dict[str, torch.Tensor]:
-        messages = self.messages[idx]
-        input_ids, loss_mask, attention_mask = self._tokenize_conversation(messages)
+        full_ids, num_masked_tokens = self.sequence_ls[idx]
+        input_ids, loss_mask, attention_mask = self._tokenize_sequence(full_ids, num_masked_tokens)
+
         position_ids = torch.arange(input_ids.shape[0], dtype=torch.long)
+
         input_ids, loss_mask, attention_mask, position_ids = self._pad_or_truncate(
             input_ids, loss_mask, attention_mask, position_ids
         )
@@ -627,18 +583,6 @@ class MySFTDataset_Instruct(Dataset):
             "position_ids": position_ids.long(),
             "loss_mask": loss_mask.float(),
         }
-
-
-    def _sanity_check_first(self):
-        if not self.messages:
-            return
-        ids, _, _ = self._tokenize_conversation(self.messages[0])
-        encoded = self._apply_template(self.messages[0], add_generation_prompt=False)
-        full_ids = encoded['input_ids'].squeeze(0) # [SEQ_LEN]
-        assert torch.equal(ids, full_ids), (
-            "per-turn concat != apply_chat_template(full messages). "
-        )
-        print("[data] sanity_check ok (first sample)")
 
 
 class SFTTensorCollator:
