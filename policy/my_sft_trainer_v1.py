@@ -930,10 +930,10 @@ class SFTTrainer:
             )
             for data in pbar:
                 input_ids = data["input_ids"].to(self.device, non_blocking=True)
-                attn = data["attention_mask"].to(self.device, non_blocking=True)
-                mask = data["loss_mask"].to(self.device, non_blocking=True)
-                logits = self.model(input_ids=input_ids, attention_mask=attn).logits
-                loss, n_tok, entropy = masked_lm_loss(logits, input_ids, mask)
+                attention_mask = data["attention_mask"].to(self.device, non_blocking=True)
+                loss_mask = data["loss_mask"].to(self.device, non_blocking=True)
+                logits = self.model(input_ids=input_ids, attention_mask=attention_mask).logits
+                loss, n_tok, entropy = masked_lm_loss(logits, input_ids, loss_mask)
                 step_n_tok += n_tok
                 step_loss_sum += float(loss.detach()) * n_tok
                 step_ent_sum += entropy * n_tok
