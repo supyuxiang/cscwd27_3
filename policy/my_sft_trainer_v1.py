@@ -988,24 +988,20 @@ class SFTTrainer:
 
                 if self.val_dataloader is not None and (is_last_step or is_valid_step):
                     last_valid_metric = self._eval()
-                    print(
-                        f"[eval {global_step}] val_loss={last_valid_metric['val/loss']:.4f} "
-                        f"val_ppl={last_valid_metric['val/ppl']:.2f}"
-                    )
                     self.swanlab_logger.log(data=last_valid_metric, step=global_step)
 
                 if is_last_step or is_save_step:
                     self._save(global_step)
 
                 if is_last_step:
-                    print(f"Final validation metrics: {last_valid_metric}")
                     return
 
             if accum > 0:
                 self.optimizer.zero_grad(set_to_none=True)
 
         self._save(global_step)
-        print(f"Final validation metrics: {last_valid_metric}")
+        if last_valid_metric is not None:
+            self.swanlab_logger.log(data=last_valid_metric, step=global_step)
 
 
 @hydra.main(config_path="config", config_name="sft_trainer_engine", version_base=None)
