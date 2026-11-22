@@ -162,17 +162,30 @@ def masked_lm_loss(
     input_ids: torch.Tensor, # bsz, seq_len
     loss_mask: torch.Tensor # bsz, seq_len
 ) -> tuple[torch.Tensor, float, float]:
-    logits_shift = logits[:, :-1].float() # bsz, seq_len-1, vocab_size
-    logp = F.log_softmax(logits_shift, dim=-1) # bsz, seq_len-1, vocab_size
-    tgt = input_ids[:, 1:].unsqueeze(-1) # bsz, seq_len-1, 1
-
-    nll = -logp.gather(dim=-1, index=tgt).squeeze(-1) # bsz, seq_len-1 -> bsz, seq_len-1, 1
-    entropy = -(logp.exp() * logp).sum(dim=-1) # bsz, seq_len-1
-    mask = loss_mask[:, 1:] # bsz, seq_len-1
-    denom = mask.sum().clamp_min(1.0)
-    loss = (nll * mask).sum() / denom
-    mean_entropy = (entropy * mask).sum() / denom
-    return loss, float(denom.item()), float(mean_entropy.detach().item())
+    # 按时间切块，避免一次性展开整段词表上的 softmax。
+    logits_shift = logits[:, :-1]
+    target = input_ids[:, 1:]
+    mask = loss_mask[:, 1:].to(dtype=logits.dtype)
+    nll_sum = torch.zeros((), device=logits.device, dtype=torch.float32)
+    ent_sum = torch.zeros((), device=logits.device, dtype=torch.float32)
+    token_count = torch.zeros((), device=logits.device, dtype=torch.float32)
+    step = 32
+    for start in range(0, logits_shift.shape[1], step):
+        chunk_logits = logits_shift[:, start : start + step].float()
+        chunk_target = target[:, start : start + step]
+        chunk_mask = mask[:, start : start + step].float()
+        lse = torch.logsumexp(chunk_logits, dim=-1)
+        chosen = chunk_logits.gather(-1, chunk_target.unsqueeze(-1)).squeeze(-1)
+        nll = lse - chosen
+        logp = chunk_logits - lse.unsqueeze(-1)
+        entropy = -(logp.exp() * logp).sum(dim=-1)
+        nll_sum = nll_sum + (nll * chunk_mask).sum()
+        ent_sum = ent_sum + (entropy * chunk_mask).sum()
+        token_count = token_count + chunk_mask.sum()
+        del chunk_logits, logp
+    denom = token_count.clamp_min(1.0)
+    loss = nll_sum / denom
+    return loss, float(token_count.detach()), float((ent_sum / denom).detach())
 
 
 
@@ -260,6 +273,9 @@ class MySFTDataset_Base(Dataset):
             # 分开编码再拼接。整段重编码时，Answer:\n 会和回答开头并成另一个 token。
             prompt_ids = self.tokenizer.encode(prompt)
             response_ids = self.tokenizer.encode(golden_res, add_special_tokens=False)
+            eos_id = self.tokenizer.eos_token_id
+            if eos_id is not None and (not response_ids or response_ids[-1] != eos_id):
+                response_ids = response_ids + [eos_id]
             full_ids = prompt_ids + response_ids
             num_masked_tokens = len(prompt_ids)
             sequence_ls.append(
@@ -770,12 +786,13 @@ class SFTTrainer:
 
                 self.swanlab_logger.log(data=metrics, step=global_step)
 
-                if self.val_dataloader is not None and (is_last_step or is_valid_step):
-                    last_valid_metric = self._eval()
-                    self.swanlab_logger.log(data=last_valid_metric, step=global_step)
-
                 if is_last_step or is_save_step:
                     self._save(global_step)
+
+                if self.val_dataloader is not None and (is_last_step or is_valid_step):
+                    torch.cuda.empty_cache()
+                    last_valid_metric = self._eval()
+                    self.swanlab_logger.log(data=last_valid_metric, step=global_step)
 
                 if is_last_step:
                     return

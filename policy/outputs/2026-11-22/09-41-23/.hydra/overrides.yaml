@@ -1,0 +1,15 @@
+- model.path=/data3/yxfeng/models/Qwen2.5/Qwen2.5-3B
+- data.train_files=/data3/yxfeng/cscwd27_ranker/gsm8k_rej/train_correct.json
+- data.val_files=/data3/yxfeng/datasets/gsm8k/sft_base/test.json
+- data.train_batch_size=32
+- data.micro_batch_size_per_gpu=2
+- data.max_length=768
+- trainer.default_local_dir=/data3/yxfeng/cscwd27_ranker/sft/qwen2.5-3b-rej
+- trainer.experiment_name=qwen2.5-3b-rej
+- trainer.project_name=gsm8k-sft
+- trainer.total_epochs=2
+- trainer.save_freq=after_each_epoch
+- trainer.test_freq=after_each_epoch
+- trainer.sample_freq=0
+- trainer.n_gpus_per_node=1
+er.n_gpus_per_node=1
